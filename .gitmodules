@@ -1,0 +1,3 @@
+[submodule "Bento/vendor/spdlog"]
+	path = Bento/vendor/spdlog
+	url = https://github.com/gabime/spdlog
