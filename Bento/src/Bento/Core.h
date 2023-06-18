@@ -10,3 +10,13 @@
 #else
 	#error Bento only support Windows!
 #endif
+
+#ifdef BENTO_ENABLE_ASSERTS
+	#define BENTO_ASSERT(x, ...) { if(!(x)) { BENTO_ERROR("Assertion Failed: {}", __VA_ARGS__); __debugbreak(); } }
+	#define BENTO_CORE_ASSERT(x, ...) { if(!(x)) { BENTO_CORE_ERROR("Assertion Failed: {}", __VA_ARGS__); __debugbreak(); } }
+#else
+	#define BENTO_ASSERT(x, ...)
+	#define BENTO_CORE_ASSERT(x, ...)
+#endif
+
+#define BIT(x) (1 << x)

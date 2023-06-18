@@ -1,3 +1,4 @@
+#include "Bentopch.h"
 #include "Log.h"
 
 namespace Bento {
