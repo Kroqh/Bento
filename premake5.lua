@@ -8,8 +8,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root foler (solution directory)
 Includedir = {}
 Includedir["GLFW"] = "Bento/vendor/GLFW/include"
+Includedir["Glad"] = "Bento/vendor/Glad/include"
+Includedir["ImGui"] = "Bento/vendor/imgui/include"
 
 include "Bento/vendor/GLFW"
+include "Bento/vendor/Glad"
+include "Bento/vendor/imgui"
 
 project "Bento"  
     location "Bento"
@@ -27,12 +31,16 @@ project "Bento"
     { 
         "%{prj.name}/vendor/spdlog/include",
         "%{prj.name}/src",
-        "%{Includedir.GLFW}"
+        "%{Includedir.GLFW}",
+        "%{Includedir.Glad}",
+        "%{Includedir.ImGui}"
     }
 
     links
     {
         "GLFW",
+        "Glad",
+        "ImGui",
         "opengl32.lib",
         "dwmapi.lib"
     }
@@ -45,7 +53,8 @@ project "Bento"
         defines 
         {
             "BENTO_PLATFORM_WINDOWS", 
-            "BENTO_BUILD_DLL"
+            "BENTO_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands
@@ -98,7 +107,7 @@ project "Sandbox"
 
         defines 
         {
-            "BENTO_PLATFORM_WINDOWS"
+            "BENTO_PLATFORM_WINDOWS",
         }
 
     filter "configurations:Debug"
