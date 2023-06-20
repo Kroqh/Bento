@@ -9,7 +9,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 Includedir = {}
 Includedir["GLFW"] = "Bento/vendor/GLFW/include"
 Includedir["Glad"] = "Bento/vendor/Glad/include"
-Includedir["ImGui"] = "Bento/vendor/imgui/include"
+Includedir["ImGui"] = "Bento/vendor/imgui"
 
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"

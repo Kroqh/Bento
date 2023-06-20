@@ -60,4 +60,26 @@ namespace Bento {
 
 	};
 
+	class BENTO_API KeyTypedEvent : public KeyEvent {
+
+	public:
+		KeyTypedEvent(int keycode)
+			: KeyEvent(keycode) {}
+
+
+		std::string ToString() const override {
+
+			std::stringstream ss;
+			ss << "KeyPressedEvent: " << m_KeyCode;
+			return ss.str();
+
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+
+	private:
+		int m_RepeatCount;
+
+	};
+
 }

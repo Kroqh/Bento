@@ -7,11 +7,17 @@
     <Filter Include="Bento\Events">
       <UniqueIdentifier>{41E4E255-2D47-72FA-D6CC-AAB0C20E3E7D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="Bento\Platform">
+      <UniqueIdentifier>{F1FF4A76-DDCD-3E7C-C661-AFA2B2CE1AE1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    <Filter Include="Bento\Platform\OpenGL">
+      <UniqueIdentifier>{05306C1E-719C-2719-3A90-BF76A6BB4981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bento\Platform\Windows">
+      <UniqueIdentifier>{2B0B0E44-1705-3796-0072-CDA6EC0A9D02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bento\ImGui">
+      <UniqueIdentifier>{5479b13b-d49e-4350-93a1-39e2955b2090}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,12 +52,18 @@
     <ClInclude Include="src\Bento\Log.h">
       <Filter>Bento</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Bento\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Platform\Windows\WindowsWindow.h">
+      <Filter>Bento\Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Window.h">
       <Filter>Bento</Filter>
     </ClInclude>
     <ClInclude Include="src\Bentopch.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>Platform\Windows</Filter>
+    <ClInclude Include="src\Bento\ImGuiLayer.h">
+      <Filter>Bento\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -67,9 +79,15 @@
     <ClCompile Include="src\Bento\Log.cpp">
       <Filter>Bento</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Bento\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Bento\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bentopch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Platform\Windows</Filter>
+    <ClCompile Include="src\Bento\ImGuiLayer.cpp">
+      <Filter>Bento\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #include <Bento.h>
 
-
 class ExampleLayer : public Bento::Layer {
 
 public:
@@ -24,6 +23,7 @@ class Sandbox : public Bento::Application
 public:
 	Sandbox() {
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Bento::ImGuiLayer());
 	}
 	~Sandbox() {
 

@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>Bentopch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_BUILD_DLL;GLFW_INCLUDE_NONE;BENTO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -103,7 +103,7 @@
       <PrecompiledHeaderFile>Bentopch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_BUILD_DLL;GLFW_INCLUDE_NONE;BENTO_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,7 +130,7 @@
       <PrecompiledHeaderFile>Bentopch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_BUILD_DLL;GLFW_INCLUDE_NONE;BENTO_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -160,22 +160,26 @@
     <ClInclude Include="src\Bento\Events\Event.h" />
     <ClInclude Include="src\Bento\Events\KeyEvent.h" />
     <ClInclude Include="src\Bento\Events\MouseEvent.h" />
+    <ClInclude Include="src\Bento\ImGuiLayer.h" />
     <ClInclude Include="src\Bento\Layer.h" />
     <ClInclude Include="src\Bento\LayerStack.h" />
     <ClInclude Include="src\Bento\Log.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Bento\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Bento\Window.h" />
     <ClInclude Include="src\Bentopch.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Application.cpp" />
+    <ClCompile Include="src\Bento\ImGuiLayer.cpp" />
     <ClCompile Include="src\Bento\Layer.cpp" />
     <ClCompile Include="src\Bento\LayerStack.cpp" />
     <ClCompile Include="src\Bento\Log.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Bentopch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
