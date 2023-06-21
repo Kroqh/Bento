@@ -8,14 +8,18 @@ public:
 	 
 	void OnUpdate() override{
 
-		if (Bento::Input::IsKeyPressed(Bento::Key::H)) {
-
-			BENTO_TRACE("Pressed H!");
-
-		}
-
 	}
 	void OnEvent(Bento::Event& event) override {
+
+		if (event.GetEventType() == Bento::EventType::KeyPressed) {
+
+			Bento::KeyPressedEvent& e = (Bento::KeyPressedEvent&)event;
+
+			if (e.GetKeyCode() == Bento::Key::H && e.GetRepeatCount() == 0) {
+				BENTO_TRACE("{0}", (char)e.GetKeyCode());
+			}
+
+		}
 
 	}
 };
