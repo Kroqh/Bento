@@ -5,7 +5,7 @@
 #include "Bento/LayerStack.h"
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
-
+#include "Events/KeyEvent.h"
 
 namespace Bento{
 
@@ -27,6 +27,7 @@ public:
 
 private:
 	bool OnWindowClose(WindowCloseEvent& e);
+	bool OnWindowCloseKey(KeyPressedEvent& e);
 	std::unique_ptr<Window> m_Window;
 	bool m_Running = true;
 	LayerStack m_LayerStack;

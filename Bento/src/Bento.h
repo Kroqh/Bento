@@ -5,6 +5,10 @@
 #include "Bento//Layer.h"
 #include "Bento/Log.h"
 
+#include "Bento/Input.h"
+#include "Bento/KeyCodes.h"
+#include "Bento/MouseCodes.h"
+
 #include "Bento/ImGui/ImGuiLayer.h"
 
 // ---Entry Point-----------------------

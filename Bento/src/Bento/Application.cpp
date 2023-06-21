@@ -3,6 +3,9 @@
 
 #include <glad/glad.h>
 
+#include "Bento/Input.h"
+#include "Bento/KeyCodes.h"
+
 namespace Bento {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -38,6 +41,7 @@ namespace Bento {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnWindowCloseKey));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
 
@@ -72,5 +76,17 @@ namespace Bento {
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowCloseKey(KeyPressedEvent& e)
+	{
+		if (Input::IsKeyPressed(Key::Escape)) {
+
+			m_Running = false;
+			return true;
+
+		}
+
+		return false;
 	}
 }

@@ -8,12 +8,14 @@ public:
 	 
 	void OnUpdate() override{
 
-		BENTO_INFO("ExampleLayer::Update");
+		if (Bento::Input::IsKeyPressed(Bento::Key::H)) {
+
+			BENTO_TRACE("Pressed H!");
+
+		}
 
 	}
 	void OnEvent(Bento::Event& event) override {
-
-		BENTO_TRACE("{0}", event);
 
 	}
 };

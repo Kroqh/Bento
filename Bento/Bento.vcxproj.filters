@@ -62,9 +62,13 @@
       <Filter>Bento</Filter>
     </ClInclude>
     <ClInclude Include="src\Bentopch.h" />
-    <ClInclude Include="src\Bento\ImGuiLayer.h">
+    <ClInclude Include="src\Bento\ImGui\ImGuiLayer.h">
       <Filter>Bento\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Input.h" />
+    <ClInclude Include="src\Bento\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Bento\KeyCodes.h" />
+    <ClInclude Include="src\Bento\MouseCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Application.cpp">
@@ -86,8 +90,9 @@
       <Filter>Bento\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Bentopch.cpp" />
-    <ClCompile Include="src\Bento\ImGuiLayer.cpp">
+    <ClCompile Include="src\Bento\ImGui\ImGuiLayer.cpp">
       <Filter>Bento\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>

@@ -160,22 +160,27 @@
     <ClInclude Include="src\Bento\Events\Event.h" />
     <ClInclude Include="src\Bento\Events\KeyEvent.h" />
     <ClInclude Include="src\Bento\Events\MouseEvent.h" />
-    <ClInclude Include="src\Bento\ImGuiLayer.h" />
+    <ClInclude Include="src\Bento\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Bento\Input.h" />
+    <ClInclude Include="src\Bento\KeyCodes.h" />
     <ClInclude Include="src\Bento\Layer.h" />
     <ClInclude Include="src\Bento\LayerStack.h" />
     <ClInclude Include="src\Bento\Log.h" />
+    <ClInclude Include="src\Bento\MouseCodes.h" />
     <ClInclude Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Bento\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Bento\Window.h" />
     <ClInclude Include="src\Bentopch.h" />
+    <ClInclude Include="src\Bento\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Application.cpp" />
-    <ClCompile Include="src\Bento\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Bento\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Bento\Layer.cpp" />
     <ClCompile Include="src\Bento\LayerStack.cpp" />
     <ClCompile Include="src\Bento\Log.cpp" />
     <ClCompile Include="src\Bento\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Bento\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Bentopch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
