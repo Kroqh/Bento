@@ -14,6 +14,7 @@ namespace Bento {
 		virtual void OnAttach() {}
 		virtual void OnDeAttach() {}
 		virtual void OnUpdate() {}
+		virtual void OnImGuiRender() {};
 		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetNAme() const { return m_DebugName; }

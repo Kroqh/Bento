@@ -7,6 +7,8 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 
+#include "Bento/ImGui/ImGuiLayer.h"
+
 namespace Bento{
 
 class BENTO_API Application
@@ -29,6 +31,7 @@ private:
 	bool OnWindowClose(WindowCloseEvent& e);
 	bool OnWindowCloseKey(KeyPressedEvent& e);
 	std::unique_ptr<Window> m_Window;
+	ImGuiLayer* m_ImGuiLayer;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
 

@@ -1,12 +1,26 @@
 #include <Bento.h>
 
+#include "imgui/imgui.h"
+
+
 class ExampleLayer : public Bento::Layer {
 
 public:
 	ExampleLayer()
-		: Layer("Example") {}
+		: Layer("Example") {
+	
+
+	}
 	 
 	void OnUpdate() override{
+
+	}
+
+	virtual void OnImGuiRender() override {
+
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World!");
+		ImGui::End();
 
 	}
 	void OnEvent(Bento::Event& event) override {
@@ -29,7 +43,6 @@ class Sandbox : public Bento::Application
 public:
 	Sandbox() {
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Bento::ImGuiLayer());
 	}
 	~Sandbox() {
 

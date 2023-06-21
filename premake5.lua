@@ -10,10 +10,12 @@ Includedir = {}
 Includedir["GLFW"] = "Bento/vendor/GLFW/include"
 Includedir["Glad"] = "Bento/vendor/Glad/include"
 Includedir["ImGui"] = "Bento/vendor/imgui"
+Includedir["glm"] = "Bento/vendor/glm"
 
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"
 include "Bento/vendor/imgui"
+-- include "Bento/vendor/glm"
 
 project "Bento"  
     location "Bento"
@@ -25,7 +27,7 @@ project "Bento"
     pchheader "Bentopch.h"
     pchsource "%{prj.name}/src/Bentopch.cpp"
 
-    files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" } 
+    files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp","%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl"  } 
 
     includedirs
     { 
@@ -33,7 +35,9 @@ project "Bento"
         "%{prj.name}/src",
         "%{Includedir.GLFW}",
         "%{Includedir.Glad}",
-        "%{Includedir.ImGui}"
+        "%{Includedir.ImGui}",
+        "%{Includedir.glm}"
+
     }
 
     links
@@ -92,7 +96,9 @@ project "Sandbox"
     includedirs
     { 
         "Bento/vendor/spdlog/include",
-        "Bento/src" 
+        "Bento/src",
+        "Bento/vendor",
+        "%{Includedir.glm}"
     }
 
     links
