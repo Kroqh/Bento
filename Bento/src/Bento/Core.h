@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef BENTO_PLATFORM_WINDOWS
+#if BENTO_DYNAMIC_LINK
 	#ifdef BENTO_BUILD_DLL
 		#define BENTO_API __declspec(dllexport)
 	#else
@@ -8,7 +9,10 @@
 	#endif
 
 #else
-	#error Bento only support Windows!
+	#define BENTO_API
+#endif
+#else
+	#error Benoto only supports Windows
 #endif
 
 #ifdef BENTO_ENABLE_ASSERTS

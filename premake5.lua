@@ -15,12 +15,13 @@ Includedir["glm"] = "Bento/vendor/glm"
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"
 include "Bento/vendor/imgui"
--- include "Bento/vendor/glm"
 
 project "Bento"  
     location "Bento"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}") 
      
@@ -50,37 +51,32 @@ project "Bento"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
-        staticruntime "On"
+    
         systemversion "latest"
 
         defines 
         {
             "BENTO_PLATFORM_WINDOWS", 
             "BENTO_BUILD_DLL",
-            "GLFW_INCLUDE_NONE"
-        }
-
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+            "GLFW_INCLUDE_NONE",
+            "_CRT_SECURE_NO_WARNINGS"
         }
  
 
     filter "configurations:Debug"
         defines "BENTO_DEBUG"   
         buildoptions "/MDd"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"  
         defines { "BENTO_RELEASE" }   
         buildoptions "/MD"  
-        optimize "On" 
+        optimize "on" 
 
     filter "configurations:Dist"  
         defines { "BENTO_DIST" }   
         buildoptions "/MD"   
-        optimize "On" 
+        optimize "on" 
 
 
 
@@ -88,6 +84,7 @@ project "Sandbox"
         location "Sandbox"
         kind "ConsoleApp"
     language "C++"
+    cppdialect "C++17"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}") 
      
@@ -107,7 +104,6 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 
@@ -119,14 +115,17 @@ project "Sandbox"
     filter "configurations:Debug"
         defines "BENTO_DEBUG"   
         buildoptions "/MDd"   
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"  
         defines { "BENTO_RELEASE" }    
         buildoptions "/MD"   
+        runtime "Release"
         optimize "On" 
 
     filter "configurations:Dist"  
         defines { "BENTO_DIST" }  
-        buildoptions "/MD"     
+        buildoptions "/MD"  
+        runtime "Release"   
         optimize "On" 
