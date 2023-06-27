@@ -143,11 +143,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Bento.h" />
     <ClInclude Include="src\Bento\Application.h" />
     <ClInclude Include="src\Bento\Core.h" />
+    <ClInclude Include="src\Bento\Core\Timestep.h" />
     <ClInclude Include="src\Bento\EntryPoint.h" />
     <ClInclude Include="src\Bento\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Bento\Events\Event.h" />
@@ -160,16 +159,20 @@
     <ClInclude Include="src\Bento\LayerStack.h" />
     <ClInclude Include="src\Bento\Log.h" />
     <ClInclude Include="src\Bento\MouseCodes.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Bento\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Bento\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Bento\Renderer\Buffer.h" />
     <ClInclude Include="src\Bento\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Bento\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Bento\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Bento\Renderer\Renderer.h" />
     <ClInclude Include="src\Bento\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Bento\Renderer\Shader.h" />
+    <ClInclude Include="src\Bento\Renderer\VertexArray.h" />
     <ClInclude Include="src\Bento\Window.h" />
     <ClInclude Include="src\Bentopch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -588,30 +591,30 @@
     <ClInclude Include="vendor\glm\glm\vec3.hpp" />
     <ClInclude Include="vendor\glm\glm\vec4.hpp" />
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
-    <ClInclude Include="src\Bento\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Bento\Application.cpp" />
     <ClCompile Include="src\Bento\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Bento\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Bento\Layer.cpp" />
     <ClCompile Include="src\Bento\LayerStack.cpp" />
     <ClCompile Include="src\Bento\Log.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Bento\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\Bentopch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\Bento\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Bento\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Bento\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Bento\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Bento\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Bento\Renderer\Shader.cpp" />
     <ClCompile Include="src\Bento\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Bentopch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

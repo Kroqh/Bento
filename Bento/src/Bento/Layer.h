@@ -2,6 +2,7 @@
 
 #include "Bento/Core.h"
 #include "Bento/Events/Event.h"
+#include "Bento/Core/Timestep.h"
 
 namespace Bento {
 
@@ -13,7 +14,7 @@ namespace Bento {
 
 		virtual void OnAttach() {}
 		virtual void OnDeAttach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep ts) {}
 		virtual void OnImGuiRender() {};
 		virtual void OnEvent(Event& event) {}
 

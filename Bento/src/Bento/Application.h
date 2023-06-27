@@ -13,6 +13,10 @@
 #include "Bento/Renderer/Buffer.h"
 #include "Bento/Renderer/VertexArray.h"
 
+#include "Bento/Renderer/OrthographicCamera.h"
+
+#include "Bento/Core/Timestep.h"
+
 namespace Bento{
 
 class BENTO_API Application
@@ -34,16 +38,15 @@ public:
 private:
 	bool OnWindowClose(WindowCloseEvent& e);
 	bool OnWindowCloseKey(KeyPressedEvent& e);
+
+private:
 	std::unique_ptr<Window> m_Window;
 	ImGuiLayer* m_ImGuiLayer;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
+	float m_LastFrameTime = 0.0f;
 
-	std::shared_ptr<VertexArray> m_VertexArray;
-	std::shared_ptr<Shader> m_Shader;
-
-	std::shared_ptr<VertexArray> m_SquareVA;
-	std::shared_ptr<Shader> m_Shader2;
+	
 private:
 	static Application* s_Instance;
 };
