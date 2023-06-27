@@ -1347,6 +1347,17 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Bento\Renderer\Shader.h" />
+    <ClInclude Include="src\Bento\Renderer\Buffer.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Bento\Renderer\Renderer.h" />
+    <ClInclude Include="src\Bento\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Bento\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Bento\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Application.cpp">
@@ -1376,5 +1387,15 @@
     <ClCompile Include="src\Bentopch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Bento\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Bento\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Bento\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Bento\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Bento\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Bento\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.cpp" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,10 @@
 
 #include "Bento/ImGui/ImGuiLayer.h"
 
+#include "Bento/Renderer/Shader.h"
+#include "Bento/Renderer/Buffer.h"
+#include "Bento/Renderer/VertexArray.h"
+
 namespace Bento{
 
 class BENTO_API Application
@@ -35,6 +39,11 @@ private:
 	bool m_Running = true;
 	LayerStack m_LayerStack;
 
+	std::shared_ptr<VertexArray> m_VertexArray;
+	std::shared_ptr<Shader> m_Shader;
+
+	std::shared_ptr<VertexArray> m_SquareVA;
+	std::shared_ptr<Shader> m_Shader2;
 private:
 	static Application* s_Instance;
 };

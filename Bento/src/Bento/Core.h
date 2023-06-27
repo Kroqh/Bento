@@ -15,6 +15,11 @@
 	#error Benoto only supports Windows
 #endif
 
+#ifdef BENTO_DEBUG
+	#define BENTO_ENABLE_ASSERTS
+#endif // BENTO_DEBUG
+
+
 #ifdef BENTO_ENABLE_ASSERTS
 	#define BENTO_ASSERT(x, ...) { if(!(x)) { BENTO_ERROR("Assertion Failed: {}", __VA_ARGS__); __debugbreak(); } }
 	#define BENTO_CORE_ASSERT(x, ...) { if(!(x)) { BENTO_CORE_ERROR("Assertion Failed: {}", __VA_ARGS__); __debugbreak(); } }

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Bento/Window.h"
+#include "Bento/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+
 
 namespace Bento {
 
@@ -30,6 +32,7 @@ namespace Bento {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData {
 
