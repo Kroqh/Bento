@@ -1,6 +1,12 @@
 #include <Bento.h>
 
+
+#include "Bento/Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
+
+#include <glm/gtc/type_ptr.hpp>
+
 
 
 class ExampleLayer : public Bento::Layer {
@@ -8,7 +14,7 @@ class ExampleLayer : public Bento::Layer {
 public:
 	ExampleLayer()
 		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition({0.0f,0.0f, 0.0f}) {
-		
+
 		// Vertex array
 		m_VertexArray.reset(Bento::VertexArray::Create());
 		// Index Buffer
@@ -22,7 +28,7 @@ public:
 		};
 
 		// Vertex Buffer
-		std::shared_ptr<Bento::VertexBuffer> m_VertexBuffer;
+		Bento::Ref<Bento::VertexBuffer> m_VertexBuffer;
 		m_VertexBuffer.reset(Bento::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		Bento::BufferLayout layout = {
@@ -40,7 +46,7 @@ public:
 			0,1,2
 		};
 
-		std::shared_ptr<Bento::IndexBuffer> m_IndexBuffer;
+		Bento::Ref<Bento::IndexBuffer> m_IndexBuffer;
 		m_IndexBuffer.reset(Bento::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
@@ -57,7 +63,7 @@ public:
 		};
 
 
-		std::shared_ptr<Bento::VertexBuffer> sqaureVB;
+		Bento::Ref<Bento::VertexBuffer> sqaureVB;
 		sqaureVB.reset(Bento::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
 		Bento::BufferLayout layout2 = {
@@ -74,7 +80,7 @@ public:
 			2,3,0
 		};
 
-		std::shared_ptr<Bento::IndexBuffer> sqaureIB;
+		Bento::Ref<Bento::IndexBuffer> sqaureIB;
 		sqaureIB.reset(Bento::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
 		m_SquareVA->SetIndexBuffer(sqaureIB);
@@ -107,14 +113,13 @@ public:
 			
 			in vec3 v_Position;
 			in vec4 v_color;
-
 			void main()
 			{
 				color = v_color;
 			}
 		)";
 
-		m_Shader.reset(new Bento::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Bento::Shader::Create(vertexSrc, fragmentSrc));
 
 		std::string vertexSrc2 = R"(
 			#version 330 core
@@ -140,14 +145,14 @@ public:
 			layout(location = 0) out vec4 color;
 			
 			in vec3 v_Position;
-
+			uniform vec3 u_Color;
 			void main()
 			{
-				color = vec4(0.3, 0.3, 0.8, 1.0);
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_Shader2.reset(new Bento::Shader(vertexSrc2, fragmentSrc2));
+		m_Shader2.reset(Bento::Shader::Create(vertexSrc2, fragmentSrc2));
 
 		
 	}
@@ -184,26 +189,32 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader2)->Bind();
+
 		for (size_t y = 0; y < 20; y++)
 		{
 			for (size_t x = 0; x < 20; x++)
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader2)->UploadUniformFloat3("u_Color", m_SquareColor);
+
 				Bento::Renderer::Submit(m_Shader2, m_SquareVA, transform);
 			}
 		}
 
-		
+		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader)->Bind();
 		Bento::Renderer::Submit(m_Shader, m_VertexArray);
-
+		
 		Bento::Renderer::EndScene();
 
 	}
 
 	virtual void OnImGuiRender() override {
 
-		
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 
 	}
 	void OnEvent(Bento::Event& event) override {
@@ -224,27 +235,26 @@ public:
 	}
 
 	bool OnKeyPressedEvent(Bento::KeyPressedEvent& event) {
-
-		
-
-
 		return false;
 
 	}
 
-private:
-	std::shared_ptr<Bento::VertexArray> m_VertexArray;
-	std::shared_ptr<Bento::Shader> m_Shader;
+	
 
-	std::shared_ptr<Bento::VertexArray> m_SquareVA;
-	std::shared_ptr<Bento::Shader> m_Shader2;
+private:
+
+	Bento::Ref<Bento::VertexArray> m_VertexArray;
+	Bento::Ref<Bento::Shader> m_Shader;
+
+	Bento::Ref<Bento::VertexArray> m_SquareVA;
+	Bento::Ref<Bento::Shader> m_Shader2;
 
 	Bento::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation = 0.0f;
-	float m_CameraSpeed = 5.0f;
+	float m_CameraSpeed = 1.0f;
 	float m_CameraTurnRate =90.0f;
-
+	glm::vec3 m_SquareColor = glm::vec3(0.3f, 0.3f, 0.8f);
 };
 
 class Sandbox : public Bento::Application

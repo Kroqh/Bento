@@ -40,7 +40,8 @@ namespace Bento {
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	
+		
+		
 
 		// Setup ImGui style
 		ImGui::StyleColorsDark();
