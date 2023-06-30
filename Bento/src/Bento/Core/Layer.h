@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Bento/Core.h"
+#include "Bento/Core/Core.h"
 #include "Bento/Events/Event.h"
 #include "Bento/Core/Timestep.h"
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Bento/Core.h"
-#include "Bento/Layer.h"
+#include "Bento/Core/Core.h"
+#include "Bento/Core/Layer.h"
 #include "Bento/Events/KeyEvent.h"
 #include "Bento/Events/MouseEvent.h"
 #include "Bento/Events/ApplicationEvent.h"

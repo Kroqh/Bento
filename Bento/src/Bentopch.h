@@ -15,7 +15,7 @@
 #include <unordered_set>
 #include <stdint.h>
 
-#include "Bento/Log.h"
+#include "Bento/Core/Log.h"
 
 #ifdef BENTO_PLATFORM_WINDOWS
 	#include <Windows.h>

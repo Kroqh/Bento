@@ -229,15 +229,6 @@ public:
 
 		m_CameraController.OnEvent(e);
 
-		if (e.GetEventType() == Bento::EventType::WindowResize) {
-
-			auto& re = (Bento::WindowResizeEvent&)e;
-
-			//float zoom = (float)re.GetWidth() / 1920.0f;
-			//
-			//m_CameraController.SetZoomLevel(zoom);
-		}
-
 		Bento::EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<Bento::KeyPressedEvent>(BENTO_BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
 

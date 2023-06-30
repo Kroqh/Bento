@@ -3,8 +3,8 @@
 
 #include "Bento/Renderer/Renderer.h"
 
-#include "Bento/Input.h"
-#include "Bento/KeyCodes.h"
+#include "Bento/Core/Input.h"
+#include "Bento/Core/KeyCodes.h"
 
 #include <GLFW/glfw3.h>
 

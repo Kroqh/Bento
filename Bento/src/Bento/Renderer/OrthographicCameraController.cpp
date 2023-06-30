@@ -1,8 +1,8 @@
 #include "Bentopch.h"
 #include "OrthographicCameraController.h"
 
-#include "Bento/Input.h"
-#include "Bento/KeyCodes.h"
+#include "Bento/Core/Input.h"
+#include "Bento/Core/KeyCodes.h"
 
 namespace Bento {
 

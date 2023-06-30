@@ -1,7 +1,7 @@
 #include "Bentopch.h"
 #include "WindowsInput.h"
 
-#include "Bento/Application.h"
+#include "Bento/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace Bento {

@@ -57,17 +57,38 @@
     <ClInclude Include="src\Bento.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Application.h">
-      <Filter>src\Bento</Filter>
+    <ClInclude Include="src\Bento\Core\Application.h">
+      <Filter>src\Bento\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Core.h">
-      <Filter>src\Bento</Filter>
+    <ClInclude Include="src\Bento\Core\Core.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\EntryPoint.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\Input.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\KeyCodes.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\Layer.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\LayerStack.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\Log.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\MouseCodes.h">
+      <Filter>src\Bento\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Core\Timestep.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\EntryPoint.h">
-      <Filter>src\Bento</Filter>
+    <ClInclude Include="src\Bento\Core\Window.h">
+      <Filter>src\Bento\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Events\ApplicationEvent.h">
       <Filter>src\Bento\Events</Filter>
@@ -83,24 +104,6 @@
     </ClInclude>
     <ClInclude Include="src\Bento\ImGui\ImGuiLayer.h">
       <Filter>src\Bento\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\Input.h">
-      <Filter>src\Bento</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\KeyCodes.h">
-      <Filter>src\Bento</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\Layer.h">
-      <Filter>src\Bento</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\LayerStack.h">
-      <Filter>src\Bento</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\Log.h">
-      <Filter>src\Bento</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\MouseCodes.h">
-      <Filter>src\Bento</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Bento\Platform\OpenGL</Filter>
@@ -135,6 +138,9 @@
     <ClInclude Include="src\Bento\Renderer\OrthographicCamera.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\OrthographicCameraController.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Renderer\RenderCommand.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
@@ -152,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\VertexArray.h">
       <Filter>src\Bento\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bento\Window.h">
-      <Filter>src\Bento</Filter>
     </ClInclude>
     <ClInclude Include="src\Bentopch.h">
       <Filter>src</Filter>
@@ -1410,26 +1413,25 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bento\Application.cpp">
-      <Filter>src\Bento</Filter>
+    <ClCompile Include="src\Bento\Core\Application.cpp">
+      <Filter>src\Bento\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Core\Layer.cpp">
+      <Filter>src\Bento\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Core\LayerStack.cpp">
+      <Filter>src\Bento\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Core\Log.cpp">
+      <Filter>src\Bento\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\ImGui\ImGuiBuild.cpp">
       <Filter>src\Bento\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\ImGui\ImGuiLayer.cpp">
       <Filter>src\Bento\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Bento\Layer.cpp">
-      <Filter>src\Bento</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Bento\LayerStack.cpp">
-      <Filter>src\Bento</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Bento\Log.cpp">
-      <Filter>src\Bento</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Bento\Platform\OpenGL</Filter>
@@ -1461,6 +1463,9 @@
     <ClCompile Include="src\Bento\Renderer\OrthographicCamera.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\OrthographicCameraController.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Renderer\RenderCommand.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
@@ -1485,6 +1490,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bento\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

@@ -1,16 +1,15 @@
 #pragma once
 
 // For use by Bento applications
-#include "Bento/Application.h"
-#include "Bento//Layer.h"
-#include "Bento/Log.h"
+#include "Bento/Core/Application.h"
+#include "Bento/Core/Layer.h"
+#include "Bento/Core/Log.h"
 
 #include "Bento/Core/Timestep.h"
 
-#include "Bento/Input.h"
-#include "Bento/KeyCodes.h"
-#include "Bento/MouseCodes.h"
-#include "Bento/OrthographicCameraController.h"
+#include "Bento/Core/Input.h"
+#include "Bento/Core/KeyCodes.h"
+#include "Bento/Core/MouseCodes.h"
 
 #include "Bento/ImGui/ImGuiLayer.h"
 
@@ -22,7 +21,8 @@
 #include "Bento/Renderer/Texture.h"
 #include "Bento/Renderer/VertexArray.h"
 #include "Bento/Renderer/OrthographicCamera.h"
+#include "Bento/Renderer/OrthographicCameraController.h"
 
 // ---Entry Point-----------------------
-#include "Bento/EntryPoint.h"
+#include "Bento/Core/EntryPoint.h"
 // ---Entry Point-----------------------

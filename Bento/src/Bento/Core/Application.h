@@ -2,10 +2,10 @@
 #include "Core.h"
 
 #include "Window.h"
-#include "Bento/LayerStack.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
-#include "Events/KeyEvent.h"
+#include "Bento/Core/LayerStack.h"
+#include "Bento/Events/Event.h"
+#include "Bento/Events/ApplicationEvent.h"
+#include "Bento/Events/KeyEvent.h"
 
 #include "Bento/ImGui/ImGuiLayer.h"
 

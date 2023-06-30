@@ -1,6 +1,6 @@
 #pragma once
 #include "Bentopch.h"
-#include "Bento/Core.h"
+#include "Bento/Core/Core.h"
 
 
 namespace Bento {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Bento/Input.h"
+#include "Bento/Core/Input.h"
 
 namespace Bento {
 
