@@ -9,11 +9,12 @@
 
 
 
+
 class ExampleLayer : public Bento::Layer {
 
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition({0.0f,0.0f, 0.0f}) {
+		: Layer("Example"), m_CameraController( 1920.0f / 1080.0f, true), m_CameraPosition({0.0f,0.0f, 0.0f}) {
 
 		// Vertex array
 		m_VertexArray.reset(Bento::VertexArray::Create());
@@ -53,12 +54,12 @@ public:
 		m_SquareVA.reset(Bento::VertexArray::Create());
 
 
-		float squareVertices[(4 * 3)] = {
+		float squareVertices[(4 * 3) + (2*4)] = {
 
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 
 		};
 
@@ -69,6 +70,7 @@ public:
 		Bento::BufferLayout layout2 = {
 
 			{Bento::ShaderDataType::Float3, "a_Position"},
+			{Bento::ShaderDataType::Float2, "a_TexCoord"},
 
 		};
 		
@@ -119,12 +121,14 @@ public:
 			}
 		)";
 
-		m_Shader.reset(Bento::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = Bento::Shader::Create("Shader", vertexSrc, fragmentSrc);
+		m_ShaderLibrary.Add(m_Shader);
 
 		std::string vertexSrc2 = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
+		    layout(location = 1) in vec2 a_TexCoord;
 			
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
@@ -152,59 +156,60 @@ public:
 			}
 		)";
 
-		m_Shader2.reset(Bento::Shader::Create(vertexSrc2, fragmentSrc2));
-
+		m_Shader2 = Bento::Shader::Create("Shader2",vertexSrc2, fragmentSrc2);
+		m_ShaderLibrary.Add(m_Shader2);
 		
+
+		m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+
+		m_Texture = Bento::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_AmongUsTexture = Bento::Texture2D::Create("assets/textures/AmongUsCharacter.png");
+
+		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_ShaderLibrary.Get("Texture"))->Bind();
+		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_ShaderLibrary.Get("Texture"))->UploadUniformInt("u_Texture", 0);
 	}
 	 
 	void OnUpdate(Bento::Timestep ts) override{
 
+		// Update
+		m_CameraController.OnUpdate(ts);
+
+		// Render
+
 		BENTO_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
-		if (Bento::Input::IsKeyPressed(Bento::Key::A))
-			m_CameraPosition.x -= m_CameraSpeed * ts;
-
-		if (Bento::Input::IsKeyPressed(Bento::Key::D))
-			m_CameraPosition.x += m_CameraSpeed * ts;
-
-		if (Bento::Input::IsKeyPressed(Bento::Key::W))
-			m_CameraPosition.y += m_CameraSpeed * ts;
-
-		if (Bento::Input::IsKeyPressed(Bento::Key::S))
-			m_CameraPosition.y -= m_CameraSpeed * ts;
-
-		if (Bento::Input::IsKeyPressed(Bento::Key::E))
-			m_CameraRotation -= m_CameraTurnRate * ts;
-
-		if (Bento::Input::IsKeyPressed(Bento::Key::Q))
-			m_CameraRotation += m_CameraTurnRate * ts;
-
+		
 		Bento::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Bento::RenderCommand::Clear();
 
-		m_Camera.SetPositon(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
+		
 
-		Bento::Renderer::BeginScene(m_Camera);
+		Bento::Renderer::BeginScene(m_CameraController.GetCamera());
+
+		
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader2)->Bind();
-
+		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader2)->UploadUniformFloat3("u_Color", m_SquareColor);
 		for (size_t y = 0; y < 20; y++)
 		{
 			for (size_t x = 0; x < 20; x++)
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader2)->UploadUniformFloat3("u_Color", m_SquareColor);
 
 				Bento::Renderer::Submit(m_Shader2, m_SquareVA, transform);
 			}
 		}
+		m_Texture->Bind();
+		Bento::Renderer::Submit(m_ShaderLibrary.Get("Texture"), m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		std::dynamic_pointer_cast<Bento::OpenGLShader>(m_Shader)->Bind();
-		Bento::Renderer::Submit(m_Shader, m_VertexArray);
+		m_AmongUsTexture->Bind();
+		Bento::Renderer::Submit(m_ShaderLibrary.Get("Texture"), m_SquareVA, glm::translate(glm::mat4(1.0f), m_AmongUsPosition) *
+			glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		// Triangle
+		//Bento::Renderer::Submit(m_Shader, m_VertexArray);
 		
 		Bento::Renderer::EndScene();
 
@@ -214,20 +219,34 @@ public:
 
 		ImGui::Begin("Settings");
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::DragFloat3("Among Us Transform", glm::value_ptr(m_AmongUsPosition), 0.1f);
 		ImGui::End();
 
-	}
-	void OnEvent(Bento::Event& event) override {
+		
 
-		Bento::EventDispatcher dispatcher(event);
+	}
+	void OnEvent(Bento::Event& e) override {
+
+		m_CameraController.OnEvent(e);
+
+		if (e.GetEventType() == Bento::EventType::WindowResize) {
+
+			auto& re = (Bento::WindowResizeEvent&)e;
+
+			//float zoom = (float)re.GetWidth() / 1920.0f;
+			//
+			//m_CameraController.SetZoomLevel(zoom);
+		}
+
+		Bento::EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<Bento::KeyPressedEvent>(BENTO_BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
 
-		if (event.GetEventType() == Bento::EventType::KeyPressed) {
+		if (e.GetEventType() == Bento::EventType::KeyPressed) {
 
-			Bento::KeyPressedEvent& e = (Bento::KeyPressedEvent&)event;
+			Bento::KeyPressedEvent& KeyPressedEvent = (Bento::KeyPressedEvent&)e;
 
-			if (e.GetKeyCode() == Bento::Key::H && e.GetRepeatCount() == 0) {
-				BENTO_TRACE("{0}", (char)e.GetKeyCode());
+			if (KeyPressedEvent.GetKeyCode() == Bento::Key::H && KeyPressedEvent.GetRepeatCount() == 0) {
+				BENTO_TRACE("{0}", (char)KeyPressedEvent.GetKeyCode());
 			}
 
 		}
@@ -242,18 +261,18 @@ public:
 	
 
 private:
-
+	Bento::ShaderLibrary m_ShaderLibrary;
 	Bento::Ref<Bento::VertexArray> m_VertexArray;
 	Bento::Ref<Bento::Shader> m_Shader;
 
 	Bento::Ref<Bento::VertexArray> m_SquareVA;
 	Bento::Ref<Bento::Shader> m_Shader2;
 
-	Bento::OrthographicCamera m_Camera;
+	Bento::Ref<Bento::Texture2D> m_Texture, m_AmongUsTexture;
+
+	Bento::OrthographicCameraController m_CameraController;
 	glm::vec3 m_CameraPosition;
-	float m_CameraRotation = 0.0f;
-	float m_CameraSpeed = 1.0f;
-	float m_CameraTurnRate =90.0f;
+	glm::vec3 m_AmongUsPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_SquareColor = glm::vec3(0.3f, 0.3f, 0.8f);
 };
 

@@ -10,6 +10,7 @@
 #include "Bento/Input.h"
 #include "Bento/KeyCodes.h"
 #include "Bento/MouseCodes.h"
+#include "Bento/OrthographicCameraController.h"
 
 #include "Bento/ImGui/ImGuiLayer.h"
 
@@ -18,6 +19,7 @@
 #include "Bento/Renderer/RendererAPI.h"
 #include "Bento/Renderer/Buffer.h"
 #include "Bento/Renderer/Shader.h"
+#include "Bento/Renderer/Texture.h"
 #include "Bento/Renderer/VertexArray.h"
 #include "Bento/Renderer/OrthographicCamera.h"
 

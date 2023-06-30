@@ -11,6 +11,7 @@ Includedir["GLFW"] = "Bento/vendor/GLFW/include"
 Includedir["Glad"] = "Bento/vendor/Glad/include"
 Includedir["ImGui"] = "Bento/vendor/imgui"
 Includedir["glm"] = "Bento/vendor/glm"
+Includedir["stb_image"] = "Bento/vendor/stb_image"
 
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"
@@ -28,7 +29,13 @@ project "Bento"
     pchheader "Bentopch.h"
     pchsource "%{prj.name}/src/Bentopch.cpp"
 
-    files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp","%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl"  } 
+    files { "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/glm/glm/**.hpp",
+        "%{prj.name}/vendor/glm/glm/**.inl",
+        "%{prj.name}/vendor/stb_image/**.h",
+        "%{prj.name}/vendor/stb_image/**.cpp"  
+    } 
 
     includedirs
     { 
@@ -37,7 +44,8 @@ project "Bento"
         "%{Includedir.GLFW}",
         "%{Includedir.Glad}",
         "%{Includedir.ImGui}",
-        "%{Includedir.glm}"
+        "%{Includedir.glm}",
+        "%{Includedir.stb_image}",
 
     }
 
