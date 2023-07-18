@@ -30,6 +30,7 @@ namespace Bento {
 
 	void ImGuiLayer::OnAttach()
 	{
+		BENTO_PROFILE_FUNCTION();
 		// Setup ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -65,6 +66,7 @@ namespace Bento {
 
 	void ImGuiLayer::OnDeAttach() 
 	{
+		BENTO_PROFILE_FUNCTION();
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -72,6 +74,7 @@ namespace Bento {
 
 	void ImGuiLayer::OnImGuiRender()
 	{
+		BENTO_PROFILE_FUNCTION();
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
 		
@@ -79,6 +82,7 @@ namespace Bento {
 
 	void ImGuiLayer::Begin()
 	{
+		BENTO_PROFILE_FUNCTION();
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -86,6 +90,7 @@ namespace Bento {
 
 	void ImGuiLayer::End()
 	{
+		BENTO_PROFILE_FUNCTION();
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());

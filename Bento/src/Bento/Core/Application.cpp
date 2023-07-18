@@ -18,6 +18,8 @@ namespace Bento {
 
 	Application::Application()
 	{
+		BENTO_PROFILE_FUNCTION();
+
 		BENTO_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -36,12 +38,14 @@ namespace Bento {
 
 	void Application::PushLayer(Layer* layer)
 	{
+		BENTO_PROFILE_FUNCTION();
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		BENTO_PROFILE_FUNCTION();
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach();
 	}
@@ -49,6 +53,8 @@ namespace Bento {
 
 	void Application::OnEvent(Event& e)
 	{
+		BENTO_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
@@ -69,7 +75,8 @@ namespace Bento {
 
 	void Application::Run()
 	{
-		
+		BENTO_PROFILE_FUNCTION();
+
 		while (m_Running) {
 			
 			float time = (float)glfwGetTime(); // Platform::GetTime();
@@ -84,8 +91,6 @@ namespace Bento {
 				}
 
 			}
-
-			
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
@@ -105,6 +110,8 @@ namespace Bento {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		BENTO_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 
 			m_Minimized = true;

@@ -8,7 +8,7 @@ namespace Bento {
 
 	public:
 		inline static void Init() {
-
+			BENTO_PROFILE_FUNCTION();
 			s_RendererAPI->Init();
 
 		}

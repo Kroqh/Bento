@@ -11,6 +11,7 @@ namespace Bento {
 
 	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
+		BENTO_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:     BENTO_CORE_ASSERT(false, " RendererAPI::None is not surrported!"); return nullptr;

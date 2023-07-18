@@ -10,6 +10,8 @@ namespace Bento {
 
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
 	{
+		BENTO_PROFILE_FUNCTION();
+
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:     BENTO_CORE_ASSERT(false, " RendererAPI::None is not surrported!"); return nullptr;
@@ -21,6 +23,7 @@ namespace Bento {
 
 	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
+		BENTO_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:		BENTO_CORE_ASSERT(false, " RendererAPI::None is not surrported!"); return nullptr;

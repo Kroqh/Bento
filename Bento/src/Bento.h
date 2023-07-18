@@ -14,6 +14,7 @@
 #include "Bento/ImGui/ImGuiLayer.h"
 
 #include "Bento/Renderer/Renderer.h"
+#include "Bento/Renderer/Renderer2D.h"
 #include "Bento/Renderer/RenderCommand.h"
 #include "Bento/Renderer/RendererAPI.h"
 #include "Bento/Renderer/Buffer.h"
@@ -23,6 +24,3 @@
 #include "Bento/Renderer/OrthographicCamera.h"
 #include "Bento/Renderer/OrthographicCameraController.h"
 
-// ---Entry Point-----------------------
-#include "Bento/Core/EntryPoint.h"
-// ---Entry Point-----------------------

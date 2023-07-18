@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include "Bento/Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Bento {
 	
@@ -10,7 +11,9 @@ namespace Bento {
 
 	void Renderer::Init()
 	{
+		BENTO_PROFILE_FUNCTION();
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)

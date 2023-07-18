@@ -27,11 +27,14 @@ namespace Bento {
 
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
 
+		BENTO_PROFILE_FUNCTION();
 		Init(props);
 		
 	}
 
 	WindowsWindow::~WindowsWindow() {
+
+		BENTO_PROFILE_FUNCTION();
 
 		Shutdown();
 
@@ -40,6 +43,7 @@ namespace Bento {
 	
 
 	void WindowsWindow::Init(const WindowProps& props) {
+		BENTO_PROFILE_FUNCTION();
 
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
@@ -182,11 +186,15 @@ namespace Bento {
 
 	void WindowsWindow::Shutdown() {
 
+		BENTO_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 
 	}
 
 	void WindowsWindow::OnUpdate() {
+
+		BENTO_PROFILE_FUNCTION();
 
 		glfwPollEvents();
 		m_Context->SwapBuffers();
@@ -194,6 +202,8 @@ namespace Bento {
 	}
 
 	void WindowsWindow::SetVSync(bool enabled) {
+
+		BENTO_PROFILE_FUNCTION();
 
 		if (enabled)
 			glfwSwapInterval(1);

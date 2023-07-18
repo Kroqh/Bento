@@ -143,6 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Bento\Debug\Instrumentor.h" />
+    <ClInclude Include="src\Bento\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Bento.h" />
     <ClInclude Include="src\Bento\Core\Application.h" />
     <ClInclude Include="src\Bento\Core\Core.h" />
@@ -598,6 +600,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Bento\Core\Application.cpp" />
     <ClCompile Include="src\Bento\Core\Layer.cpp" />
     <ClCompile Include="src\Bento\Core\LayerStack.cpp" />

@@ -1,11 +1,13 @@
 #include <Bento.h>
-
+#include "Bento/Core/EntryPoint.h"
 
 #include "Bento/Platform/OpenGL/OpenGLShader.h"
 
 #include "imgui/imgui.h"
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Sandbox2D.h"
 
 
 
@@ -17,7 +19,7 @@ public:
 		: Layer("Example"), m_CameraController( 1920.0f / 1080.0f, true), m_CameraPosition({0.0f,0.0f, 0.0f}) {
 
 		// Vertex array
-		m_VertexArray.reset(Bento::VertexArray::Create());
+		m_VertexArray = Bento::VertexArray::Create();
 		// Index Buffer
 
 		float vertices[(3 * 3) + (4 * 4)] = {
@@ -51,7 +53,7 @@ public:
 		m_IndexBuffer.reset(Bento::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		m_SquareVA.reset(Bento::VertexArray::Create());
+		m_SquareVA = Bento::VertexArray::Create();
 
 
 		float squareVertices[(4 * 3) + (2*4)] = {
@@ -228,25 +230,6 @@ public:
 	void OnEvent(Bento::Event& e) override {
 
 		m_CameraController.OnEvent(e);
-
-		Bento::EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<Bento::KeyPressedEvent>(BENTO_BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
-
-		if (e.GetEventType() == Bento::EventType::KeyPressed) {
-
-			Bento::KeyPressedEvent& KeyPressedEvent = (Bento::KeyPressedEvent&)e;
-
-			if (KeyPressedEvent.GetKeyCode() == Bento::Key::H && KeyPressedEvent.GetRepeatCount() == 0) {
-				BENTO_TRACE("{0}", (char)KeyPressedEvent.GetKeyCode());
-			}
-
-		}
-
-	}
-
-	bool OnKeyPressedEvent(Bento::KeyPressedEvent& event) {
-		return false;
-
 	}
 
 	
@@ -271,7 +254,8 @@ class Sandbox : public Bento::Application
 {
 public:
 	Sandbox() {
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 	~Sandbox() {
 

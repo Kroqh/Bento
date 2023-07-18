@@ -14,6 +14,7 @@ namespace Bento {
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
+		BENTO_PROFILE_FUNCTION();
 		if (Input::IsKeyPressed(Key::A))
 			m_CameraPosition.x -= m_CameraSpeed * ts;
 
@@ -44,7 +45,7 @@ namespace Bento {
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
-		
+		BENTO_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(BENTO_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(BENTO_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
@@ -52,6 +53,7 @@ namespace Bento {
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		BENTO_PROFILE_FUNCTION();
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
@@ -61,6 +63,7 @@ namespace Bento {
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		BENTO_PROFILE_FUNCTION();
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

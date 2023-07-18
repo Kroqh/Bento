@@ -17,6 +17,8 @@
 
 #include "Bento/Core/Log.h"
 
+#include "Bento/Debug/Instrumentor.h"
+
 #ifdef BENTO_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif 
