@@ -32,7 +32,7 @@ public:
 
 		// Vertex Buffer
 		Bento::Ref<Bento::VertexBuffer> m_VertexBuffer;
-		m_VertexBuffer.reset(Bento::VertexBuffer::Create(vertices, sizeof(vertices)));
+		m_VertexBuffer = Bento::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		Bento::BufferLayout layout = {
 
@@ -67,7 +67,7 @@ public:
 
 
 		Bento::Ref<Bento::VertexBuffer> sqaureVB;
-		sqaureVB.reset(Bento::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		sqaureVB = Bento::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		Bento::BufferLayout layout2 = {
 

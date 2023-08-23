@@ -30,6 +30,11 @@ namespace Bento {
 			s_RendererAPI->SetClearColor(color);
 
 		}
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) {
+
+			s_RendererAPI->DrawIndexed(vertexArray, indexCount);
+
+		}
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) {
 
 			s_RendererAPI->DrawIndexed(vertexArray);

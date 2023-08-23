@@ -10,6 +10,9 @@
     <Filter Include="src\Bento\Core">
       <UniqueIdentifier>{2C3E99D8-180C-8DDE-01A0-FD04ED0C6943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Bento\Debug">
+      <UniqueIdentifier>{CA5ECDEB-36EA-3AB0-3FFB-BDA4AB0597B0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Bento\Events">
       <UniqueIdentifier>{B88A0369-A483-22BB-CDB5-0740B90D02C7}</UniqueIdentifier>
     </Filter>
@@ -90,6 +93,9 @@
     <ClInclude Include="src\Bento\Core\Window.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Debug\Instrumentor.h">
+      <Filter>src\Bento\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Events\ApplicationEvent.h">
       <Filter>src\Bento\Events</Filter>
     </ClInclude>
@@ -145,6 +151,9 @@
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Renderer.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\Renderer2D.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\RendererAPI.h">
@@ -1413,8 +1422,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Bento\Debug\Instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Core\Application.cpp">
@@ -1474,6 +1481,9 @@
     <ClCompile Include="src\Bento\Renderer\Renderer.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Renderer\RendererAPI.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
@@ -1492,6 +1502,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

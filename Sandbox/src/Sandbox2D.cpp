@@ -49,10 +49,11 @@ void Sandbox2D::OnUpdate(Bento::Timestep ts)
 	{
 		BENTO_PROFILE_SCOPE("Renderer Draw");
 		Bento::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
+		
 		Bento::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.3f, 0.3f, 1.0f });
 		Bento::Renderer2D::DrawQuad({ 2.0f,1.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.3f, 1.0f });
-		Bento::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 100.0f, 100.0f }, m_Texture);
+		Bento::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 100.0f, 100.0f }, m_Texture, 100.0f);
+		Bento::Renderer2D::DrawQuad({ 1.0f, 1.0f, -0.01f }, { 50.0f, 50.0f }, m_Texture, 100.0f);
 		Bento::Renderer2D::EndScene();
 	}
 	

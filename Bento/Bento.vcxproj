@@ -26,19 +26,19 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,6 +83,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -107,6 +108,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +134,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,8 +146,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Bento\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Bento\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Bento.h" />
     <ClInclude Include="src\Bento\Core\Application.h" />
     <ClInclude Include="src\Bento\Core\Core.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\Bento\Core\MouseCodes.h" />
     <ClInclude Include="src\Bento\Core\Timestep.h" />
     <ClInclude Include="src\Bento\Core\Window.h" />
+    <ClInclude Include="src\Bento\Debug\Instrumentor.h" />
     <ClInclude Include="src\Bento\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Bento\Events\Event.h" />
     <ClInclude Include="src\Bento\Events\KeyEvent.h" />
@@ -176,6 +178,7 @@
     <ClInclude Include="src\Bento\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Bento\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Bento\Renderer\Renderer.h" />
+    <ClInclude Include="src\Bento\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Bento\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Bento\Renderer\Shader.h" />
     <ClInclude Include="src\Bento\Renderer\Texture.h" />
@@ -600,7 +603,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Bento\Core\Application.cpp" />
     <ClCompile Include="src\Bento\Core\Layer.cpp" />
     <ClCompile Include="src\Bento\Core\LayerStack.cpp" />
@@ -620,6 +622,7 @@
     <ClCompile Include="src\Bento\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Bento\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Bento\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Bento\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Bento\Renderer\Shader.cpp" />
     <ClCompile Include="src\Bento\Renderer\Texture.cpp" />
