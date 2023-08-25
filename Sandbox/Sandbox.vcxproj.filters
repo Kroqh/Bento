@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClCompile Include="src\SanboxApp.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
+    <ClCompile Include="src\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\ParticleSystem.h" />
   </ItemGroup>
 </Project>

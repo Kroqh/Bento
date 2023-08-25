@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 namespace Bento {
 
+	
+
 	class OrthographicCamera
 	{
 	public:

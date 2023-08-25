@@ -181,6 +181,7 @@
     <ClInclude Include="src\Bento\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Bento\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Bento\Renderer\Shader.h" />
+    <ClInclude Include="src\Bento\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Bento\Renderer\Texture.h" />
     <ClInclude Include="src\Bento\Renderer\VertexArray.h" />
     <ClInclude Include="src\Bentopch.h" />
@@ -625,6 +626,7 @@
     <ClCompile Include="src\Bento\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Bento\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Bento\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Bento\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Bento\Renderer\Texture.cpp" />
     <ClCompile Include="src\Bento\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Bentopch.cpp">

@@ -20,6 +20,7 @@
 #include "Bento/Renderer/Buffer.h"
 #include "Bento/Renderer/Shader.h"
 #include "Bento/Renderer/Texture.h"
+#include "Bento/Renderer/SubTexture2D.h"
 #include "Bento/Renderer/VertexArray.h"
 #include "Bento/Renderer/OrthographicCamera.h"
 #include "Bento/Renderer/OrthographicCameraController.h"
