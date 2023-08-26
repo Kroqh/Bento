@@ -219,13 +219,6 @@ public:
 
 	virtual void OnImGuiRender() override {
 
-		ImGui::Begin("Settings");
-		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
-		ImGui::DragFloat3("Among Us Transform", glm::value_ptr(m_AmongUsPosition), 0.1f);
-		ImGui::End();
-
-		
-
 	}
 	void OnEvent(Bento::Event& e) override {
 

@@ -21,6 +21,7 @@ private:
 	Bento::Ref<Bento::Texture2D> m_Texture;
 	Bento::Ref<Bento::Texture2D> m_SpriteSheet;
 	Bento::Ref<Bento::SubTexture2D> m_ErrorTexture;
+	Bento::Ref<Bento::Framebuffer> m_Framebuffer;
 
 	glm::vec4 m_SquareColor = glm::vec4(0.3f, 0.3f, 0.8f, 1.0f);
 
