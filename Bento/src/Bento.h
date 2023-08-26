@@ -19,6 +19,7 @@
 #include "Bento/Renderer/RendererAPI.h"
 #include "Bento/Renderer/Buffer.h"
 #include "Bento/Renderer/Shader.h"
+#include "Bento/Renderer/Framebuffer.h"
 #include "Bento/Renderer/Texture.h"
 #include "Bento/Renderer/SubTexture2D.h"
 #include "Bento/Renderer/VertexArray.h"

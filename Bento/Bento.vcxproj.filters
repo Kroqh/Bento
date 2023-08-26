@@ -1423,6 +1423,8 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\SubTexture2D.h" />
+    <ClInclude Include="src\Bento\Renderer\Framebuffer.h" />
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Core\Application.cpp">
@@ -1504,5 +1506,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Renderer\SubTexture2D.cpp" />
+    <ClCompile Include="src\Bento\Renderer\Framebuffer.cpp" />
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

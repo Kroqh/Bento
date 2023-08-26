@@ -2,6 +2,7 @@
 
 #include <memory>
 
+
 #ifdef BENTO_PLATFORM_WINDOWS
 #if BENTO_DYNAMIC_LINK
 	#ifdef BENTO_BUILD_DLL

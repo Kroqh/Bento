@@ -75,8 +75,6 @@ namespace Bento {
 	void ImGuiLayer::OnImGuiRender()
 	{
 		BENTO_PROFILE_FUNCTION();
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
 		
 	}
 
