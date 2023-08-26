@@ -16,6 +16,7 @@ namespace Bento {
 	class Framebuffer {
 
 	public:
+		virtual ~Framebuffer() = default;
 		virtual const FramebufferSpecification& GetSpecification() const = 0;
 		virtual  const uint32_t GetColorAttachmentRendererID() const = 0;
 

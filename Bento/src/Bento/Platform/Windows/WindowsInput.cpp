@@ -1,14 +1,13 @@
 #include "Bentopch.h"
-#include "WindowsInput.h"
+#include "Bento/Core/Input.h"
 
 #include "Bento/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace Bento {
 
-	Input* Input::s_Instacne = new WindowsInput();
 
-	bool Bento::WindowsInput::IsKeyPressedImpl(int keycode)
+	bool Input::IsKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -16,7 +15,7 @@ namespace Bento {
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool Bento::WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool Input::IsMouseButtonPressed(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -24,7 +23,7 @@ namespace Bento {
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> Bento::WindowsInput::GetMousePositionImpl()
+	std::pair<float, float> Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -34,15 +33,15 @@ namespace Bento {
 		return { x, y };
 	}
 
-	float Bento::WindowsInput::GetMouseXImpl()
+	float Input::GetMouseX()
 	{
-		auto [x, y] = GetMousePositionImpl();
+		auto [x, y] = GetMousePosition();
 		return x;
 	}
 
-	float Bento::WindowsInput::GetMouseYImpl()
+	float Input::GetMouseY()
 	{
-		auto [x, y] = GetMousePositionImpl();
+		auto [x, y] = GetMousePosition();
 		return y;
 	}
 
