@@ -22,7 +22,7 @@ namespace Bento{
 class BENTO_API Application
 {
 public:
-	Application();
+	Application(const std::string& name = "Bento App");
 	virtual ~Application();
 
 	void Run();

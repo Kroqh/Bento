@@ -117,6 +117,9 @@
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.h">
+      <Filter>src\Bento\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClInclude>
@@ -136,6 +139,9 @@
       <Filter>src\Bento\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Buffer.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\Framebuffer.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\GraphicsContext.h">
@@ -160,6 +166,9 @@
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Shader.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\SubTexture2D.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Texture.h">
@@ -1422,9 +1431,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Renderer\SubTexture2D.h" />
-    <ClInclude Include="src\Bento\Renderer\Framebuffer.h" />
-    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Core\Application.cpp">
@@ -1451,6 +1457,9 @@
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.cpp">
+      <Filter>src\Bento\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1470,6 +1479,9 @@
       <Filter>src\Bento\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Renderer\Buffer.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\Framebuffer.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Renderer\OrthographicCamera.cpp">
@@ -1493,6 +1505,9 @@
     <ClCompile Include="src\Bento\Renderer\Shader.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\SubTexture2D.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Renderer\Texture.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
@@ -1505,8 +1520,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bento\Renderer\SubTexture2D.cpp" />
-    <ClCompile Include="src\Bento\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

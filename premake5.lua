@@ -1,7 +1,7 @@
 workspace " Bento"  
 architecture "x64"
 configurations { "Debug", "Release", "Dist" } 
-
+startproject "Bento-Editor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -137,3 +137,57 @@ project "Sandbox"
         buildoptions "/MD"  
         runtime "Release"   
         optimize "On" 
+
+
+project "Bento-Editor"
+    location "Bento-Editor"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}") 
+     
+    files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" } 
+
+    includedirs
+    { 
+        "Bento/vendor/spdlog/include",
+        "Bento/src",
+        "Bento/vendor",
+        "%{Includedir.glm}"
+    }
+
+    links
+    {
+        "Bento"
+    }
+
+    filter "system:windows"
+        staticruntime "On"
+        systemversion "latest"
+
+        defines 
+        {
+            "BENTO_PLATFORM_WINDOWS",
+        }
+
+    filter "configurations:Debug"
+        defines "BENTO_DEBUG"   
+        buildoptions "/MDd"   
+        runtime "Debug"
+        symbols "On"
+
+    filter "configurations:Release"  
+        defines { "BENTO_RELEASE" }    
+        buildoptions "/MD"   
+        runtime "Release"
+        optimize "On" 
+
+    filter "configurations:Dist"  
+        defines { "BENTO_DIST" }  
+        buildoptions "/MD"  
+        runtime "Release"   
+        optimize "On" 
+
+
+
