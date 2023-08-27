@@ -170,14 +170,46 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, color);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor)
+	{
+		DrawQuad({ position.x,position.y, 0.0f }, size, texture, tilingFactor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor)
+	{
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, texture, tilingFactor);
+	}
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor)
+	{
+		DrawQuad({ position.x,position.y, 0.0f }, size, subtexture, tilingFactor);
+	}
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, subtexture, tilingFactor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	{
+		BENTO_PROFILE_FUNCTION();
+
 		if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices)
 			FlushAndReset();
 
 		const float texIndex = 0.0f; // White/Default texture
 		const float tilingFactor = 1.0f;
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
 		s_Data.QuadVertexBufferPtr->Color = color;
@@ -212,13 +244,9 @@ namespace Bento {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor)
 	{
-		DrawQuad({ position.x,position.y, 0.0f }, size, texture, tilingFactor);
-	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor)
-	{
 		BENTO_PROFILE_FUNCTION();
 
 		constexpr glm::vec2 textureCoords[] = {
@@ -253,9 +281,6 @@ namespace Bento {
 			s_Data.TextureSlotIndex++;
 		}
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
 		s_Data.QuadVertexBufferPtr->Color = color;
 		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[0];
@@ -288,12 +313,10 @@ namespace Bento {
 
 		s_Data.Stats.QuadCount++;
 	}
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor)
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor)
 	{
-		DrawQuad({ position.x,position.y, 0.0f }, size, subtexture, tilingFactor);
-	}
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor)
-	{
+
 		BENTO_PROFILE_FUNCTION();
 
 		const glm::vec2* textureCoords = subtexture->GetTexCoords();
@@ -322,9 +345,6 @@ namespace Bento {
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
 		}
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
 		s_Data.QuadVertexBufferPtr->Color = color;

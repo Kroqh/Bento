@@ -12,6 +12,7 @@ Includedir["Glad"] = "Bento/vendor/Glad/include"
 Includedir["ImGui"] = "Bento/vendor/imgui"
 Includedir["glm"] = "Bento/vendor/glm"
 Includedir["stb_image"] = "Bento/vendor/stb_image"
+Includedir["entt"] = "Bento/vendor/entt/include"
 
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"
@@ -46,6 +47,7 @@ project "Bento"
         "%{Includedir.ImGui}",
         "%{Includedir.glm}",
         "%{Includedir.stb_image}",
+        "%{Includedir.entt}"
 
     }
 
@@ -103,7 +105,8 @@ project "Sandbox"
         "Bento/vendor/spdlog/include",
         "Bento/src",
         "Bento/vendor",
-        "%{Includedir.glm}"
+        "%{Includedir.glm}",
+        "%{Includedir.entt}"
     }
 
     links
@@ -154,7 +157,8 @@ project "Bento-Editor"
         "Bento/vendor/spdlog/include",
         "Bento/src",
         "Bento/vendor",
-        "%{Includedir.glm}"
+        "%{Includedir.glm}",
+        "%{Includedir.entt}"
     }
 
     links

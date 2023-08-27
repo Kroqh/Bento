@@ -16,18 +16,18 @@ namespace Bento {
 		virtual void OnEvent(Bento::Event& event) override;
 
 	private:
+		bool m_ViewportFocused = false;
 		Bento::OrthographicCameraController m_CameraController;
 
 		Bento::Ref<Bento::Texture2D> m_Texture;
-		Bento::Ref<Bento::Texture2D> m_SpriteSheet;
-		Bento::Ref<Bento::SubTexture2D> m_ErrorTexture;
 		Bento::Ref<Bento::Framebuffer> m_Framebuffer;
 
-		glm::vec4 m_SquareColor = glm::vec4(0.3f, 0.3f, 0.8f, 1.0f);
+		Ref<Scene> m_ActiveScene;
+		Entity m_SquareEntity;
+
 
 		glm::vec2 m_ViewportSize = {0.0f, 0.0f};
 
-		std::unordered_map<char, Bento::Ref<Bento::SubTexture2D>> s_TextureMap;
 	};
 
 }

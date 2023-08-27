@@ -8,23 +8,6 @@
 
 namespace Bento {
 
-	static const uint32_t s_MapWidth = 24;
-	static const uint32_t s_MapHeight = 12;
-	static const char* s_MapTiles =
-
-		"WWWWWWWWWWWWWWWWWWWWWWWW"
-		"WWWWWWWWWWWWWWWWWWWWWWWW"
-		"WWWWWWDDDDDDWWWWWWWWWWWW"
-		"WWWWDDDDDDDDDDDWWWWWWWWW"
-		"WWWDDDDDDDDDDDDDDDWWWWWW"
-		"WWDDDDDDDDDDDDDDDDDWWWWW"
-		"WDDDDDDDDDDDDDDDDDDDWWWW"
-		"WWDDDDDDDDDDDDDDDDDWWWWW"
-		"WWWWWDDDDDDWWDDDDDWWWWWW"
-		"WWWWWWWWDDDWWDDDDWWWWWWW"
-		"WWWWWWWWWDDDDDDDWWWWWWWW"
-		"WWWWWWWWWWDDDDWWWWWWWWWW";
-
 
 	EditorLayer::EditorLayer()
 		: Layer("Sandbox2D"), m_CameraController(1920.0f / 1080.0f, true)
@@ -36,10 +19,6 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
-		m_SpriteSheet = Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
-		s_TextureMap['D'] = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 11 }, { 128, 128 });
-		s_TextureMap['W'] = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 11, 11 }, { 128, 128 });
-		m_ErrorTexture = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 6 }, { 128, 128 });
 
 		m_CameraController.SetZoomLevel(5.0f);
 
@@ -48,6 +27,12 @@ namespace Bento {
 		fbSpec.Height = Application::Get().GetWindow().GetHeight();
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
+		m_ActiveScene = CreateRef<Scene>();
+
+
+		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
+
+		m_SquareEntity.AddComponent<SpriteRendererComponent>( glm::vec4{0.0f, 1.0f, 0.0f, 1.0f });
 	}
 
 	void EditorLayer::OnDeAttach()
@@ -62,9 +47,10 @@ namespace Bento {
 
 
 		// Update
-		{
-			BENTO_PROFILE_SCOPE("OrthographicCameraController::OnUpdate");
+		if (m_ViewportFocused) {
+
 			m_CameraController.OnUpdate(ts);
+			
 		}
 
 
@@ -79,32 +65,12 @@ namespace Bento {
 		}
 
 
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
+		// Update Scene
+		m_ActiveScene->OnUpdate(ts);
 
-		{
-			static float rotation = 0.0f;
-
-			rotation += ts * 50.0f;
-
-			BENTO_PROFILE_SCOPE("Renderer Draw");
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (uint32_t y = 0; y < s_MapHeight; y++)
-			{
-				for (uint32_t x = 0; x < s_MapWidth; x++)
-				{
-					char tileType = s_MapTiles[x + y * s_MapWidth];
-					Ref<SubTexture2D> texture;
-					if (s_TextureMap.find(tileType) != s_TextureMap.end())
-						texture = s_TextureMap[tileType];
-					else
-						texture = m_ErrorTexture;
-
-					Renderer2D::DrawQuad({ x - s_MapWidth / 2.0f, y - s_MapHeight / 2.0f }, { 1.0f, 1.0f }, texture, 1.0f);
-				}
-			}
-			Renderer2D::EndScene();
-			m_Framebuffer->UnBind();
-
-		}
+		Renderer2D::EndScene();
+		m_Framebuffer->UnBind();
 
 
 
@@ -184,11 +150,23 @@ namespace Bento {
 		ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		BENTO_TRACE("Entity exist: {}", m_SquareEntity);
+		if (m_SquareEntity) {
+
+			ImGui::Separator();
+			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
+			ImGui::Text("%s", tag.c_str());
+
+			auto& squareEntityColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Square Entity Color", glm::value_ptr(squareEntityColor));
+
+			ImGui::Separator();
+		}
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::Begin("Viewport");
+		m_ViewportFocused = ImGui::IsWindowFocused();
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize)) {
 
@@ -208,6 +186,9 @@ namespace Bento {
 
 	void EditorLayer::OnEvent(Event& e)
 	{
+		if (!m_ViewportFocused)
+			return;
+
 		m_CameraController.OnEvent(e);
 
 

@@ -13,6 +13,10 @@
 
 #include "Bento/ImGui/ImGuiLayer.h"
 
+#include "Bento/Scene/Scene.h"
+#include "Bento/Scene/Entity.h"
+#include "Bento/Scene/Components.h"
+
 #include "Bento/Renderer/Renderer.h"
 #include "Bento/Renderer/Renderer2D.h"
 #include "Bento/Renderer/RenderCommand.h"
