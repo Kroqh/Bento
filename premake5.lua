@@ -39,8 +39,9 @@ project "Bento"
         "%{prj.name}/vendor/glm/glm/**.inl",
         "%{prj.name}/vendor/stb_image/**.h",
         "%{prj.name}/vendor/stb_image/**.cpp",
-        "%{prj.name}/vendor/ImGuizo/ImGuizo/**.h",
-        "%{prj.name}/vendor/ImGuizo/ImGuizo/**.cpp"
+
+        "%{prj.name}/vendor/ImGuizmo/**.h",
+        "%{prj.name}/vendor/ImGuizmo/**.cpp"
     } 
 
     includedirs
@@ -67,6 +68,9 @@ project "Bento"
         "opengl32.lib",
         "dwmapi.lib"
     }
+
+    filter "files:Bento/vendor/ImGuizmo/**.cpp"
+	    flags { "NoPCH" }
 
     filter "system:windows"
     
@@ -116,7 +120,8 @@ project "Sandbox"
         "Bento/src",
         "Bento/vendor",
         "%{Includedir.glm}",
-        "%{Includedir.entt}"
+        "%{Includedir.entt}",
+        "%{Includedir.ImGuizmo}"
     }
 
     links
@@ -168,7 +173,8 @@ project "Bento-Editor"
         "Bento/src",
         "Bento/vendor",
         "%{Includedir.glm}",
-        "%{Includedir.entt}"
+        "%{Includedir.entt}",
+        "%{Includedir.ImGuizmo}"
     }
 
     links
