@@ -16,7 +16,7 @@ namespace Bento {
 		virtual void OnAttach() override;
 		virtual void OnDeAttach() override;
 		virtual void OnImGuiRender() override;
-
+		virtual void OnEvent(Event& e) override;
 		void BlockEvents(bool block) { m_BlockEvents = block; }
 
 		void SetDarkThemeColors();

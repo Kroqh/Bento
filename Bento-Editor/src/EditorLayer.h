@@ -23,7 +23,7 @@ namespace Bento {
 		void SaveSceneAs();
 
 	private:
-		bool m_ViewportFocused = false;
+		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		Bento::OrthographicCameraController m_CameraController;
 
 		Bento::Ref<Bento::Texture2D> m_Texture;
