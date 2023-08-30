@@ -150,7 +150,6 @@ namespace Bento {
 		ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
 
-		BENTO_TRACE("Entity exist: {}", m_SquareEntity);
 		if (m_SquareEntity) {
 
 			ImGui::Separator();

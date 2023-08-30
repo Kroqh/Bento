@@ -16,12 +16,16 @@ namespace Bento {
 
 		Entity CreateEntity(const std::string& name);
 
+		void DestroyEntity(Entity entity);
+
+
 
 		void OnUpdate(Timestep ts);
 	private:
 		entt::registry m_Registry;
-
 		friend class Entity;
+		friend class SceneSerializer;
+		friend class SceneHierarchyPanel;
 
 	};
 

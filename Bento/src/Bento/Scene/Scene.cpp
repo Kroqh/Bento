@@ -28,6 +28,11 @@ namespace Bento {
 		return entity;
 	}
 
+	void Scene::DestroyEntity(Entity entity)
+	{
+		m_Registry.destroy(entity);
+	}
+
 	void Scene::OnUpdate(Timestep ts)
 	{
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
@@ -35,7 +40,7 @@ namespace Bento {
 		{
 			auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawQuad(transform, sprite.Color);
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
 		}
 	}
 
