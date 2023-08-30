@@ -1,5 +1,6 @@
 #pragma once
 #include <Bento.h>
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Bento {
 
@@ -14,6 +15,12 @@ namespace Bento {
 		virtual void OnUpdate(Bento::Timestep ts) override;
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Bento::Event& event) override;
+	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
 
 	private:
 		bool m_ViewportFocused = false;
@@ -27,6 +34,8 @@ namespace Bento {
 
 
 		glm::vec2 m_ViewportSize = {0.0f, 0.0f};
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 	};
 

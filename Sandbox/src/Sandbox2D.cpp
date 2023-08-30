@@ -98,7 +98,6 @@ void Sandbox2D::OnUpdate(Bento::Timestep ts)
 				else
 					texture = m_ErrorTexture;
 
-				Bento::Renderer2D::DrawQuad({ x - s_MapWidth / 2.0f, y - s_MapHeight / 2.0f}, {1.0f, 1.0f}, texture, 1.0f);
 			}
 		}
 		Bento::Renderer2D::EndScene();

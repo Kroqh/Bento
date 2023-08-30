@@ -3,23 +3,23 @@
 
 namespace Bento {
 
-	class ScriptableEntity {
-
+	class ScriptableEntity
+	{
 	public:
-		virtual ~ScriptableEntity() {};
+		virtual ~ScriptableEntity() {}
+
 		template<typename T>
-		T& GetComponent() {
+		T& GetComponent()
+		{
 			return m_Entity.GetComponent<T>();
 		}
-
 	protected:
-		virtual void OnCreate() = 0;
-		virtual void OnDestroy() = 0;
-		virtual void OnUpdate(Bento::Timestep ts) = 0;
+		virtual void OnCreate() {}
+		virtual void OnDestroy() {}
+		virtual void OnUpdate(Timestep ts) {}
 	private:
 		Entity m_Entity;
 		friend class Scene;
-
 	};
 
 }

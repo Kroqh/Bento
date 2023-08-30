@@ -31,6 +31,12 @@
     <Filter Include="src\Bento\Renderer">
       <UniqueIdentifier>{7A270CAF-660B-CD04-CF6B-C757BB6EB786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Bento\Scene">
+      <UniqueIdentifier>{71C1DBEC-DD4C-49B1-E65D-CCA55268A5B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Bento\Utils">
+      <UniqueIdentifier>{B45509ED-20E1-76B1-29F2-F9A595FCD2B1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
@@ -141,6 +147,9 @@
     <ClInclude Include="src\Bento\Renderer\Buffer.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\Camera.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Framebuffer.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
@@ -176,6 +185,27 @@
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\VertexArray.h">
       <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\Components.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\Entity.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\Scene.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\SceneCamera.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\SceneSerializer.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scene\ScriptableEntity.h">
+      <Filter>src\Bento\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Utils\PlatformUtils.h">
+      <Filter>src\Bento\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Bentopch.h">
       <Filter>src</Filter>
@@ -1431,9 +1461,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Scene\Scene.h" />
-    <ClInclude Include="src\Bento\Scene\Components.h" />
-    <ClInclude Include="src\Bento\Scene\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Core\Application.cpp">
@@ -1478,6 +1505,9 @@
     <ClCompile Include="src\Bento\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Bento\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>src\Bento\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Bento\Platform\Windows</Filter>
     </ClCompile>
@@ -1517,13 +1547,23 @@
     <ClCompile Include="src\Bento\Renderer\VertexArray.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Scene\Entity.cpp">
+      <Filter>src\Bento\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Scene\Scene.cpp">
+      <Filter>src\Bento\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Scene\SceneCamera.cpp">
+      <Filter>src\Bento\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Scene\SceneSerializer.cpp">
+      <Filter>src\Bento\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bentopch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bento\Scene\Scene.cpp" />
-    <ClCompile Include="src\Bento\Scene\Entity.cpp" />
   </ItemGroup>
 </Project>

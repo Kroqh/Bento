@@ -9,10 +9,10 @@
 namespace YAML {
 
 	template<>
-	struct convert<glm::vec3> {
-
-		static Node encode(const glm::vec3& rhs) {
-
+	struct convert<glm::vec3>
+	{
+		static Node encode(const glm::vec3& rhs)
+		{
 			Node node;
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
@@ -20,8 +20,8 @@ namespace YAML {
 			return node;
 		}
 
-		static bool decode(const Node& node, glm::vec3& rhs) {
-
+		static bool decode(const Node& node, glm::vec3& rhs)
+		{
 			if (!node.IsSequence() || node.size() != 3)
 				return false;
 
@@ -30,13 +30,13 @@ namespace YAML {
 			rhs.z = node[2].as<float>();
 			return true;
 		}
-
 	};
+
 	template<>
-	struct convert<glm::vec4> {
-
-		static Node encode(const glm::vec4& rhs) {
-
+	struct convert<glm::vec4>
+	{
+		static Node encode(const glm::vec4& rhs)
+		{
 			Node node;
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
@@ -45,8 +45,8 @@ namespace YAML {
 			return node;
 		}
 
-		static bool decode(const Node& node, glm::vec4& rhs) {
-
+		static bool decode(const Node& node, glm::vec4& rhs)
+		{
 			if (!node.IsSequence() || node.size() != 4)
 				return false;
 
@@ -56,8 +56,8 @@ namespace YAML {
 			rhs.w = node[3].as<float>();
 			return true;
 		}
-
 	};
+	
 
 }
 
@@ -124,8 +124,8 @@ namespace Bento {
 
 			out << YAML::Key << "Camera" << YAML::Value;
 			out << YAML::BeginMap; // Camera
-			out << YAML::Key << "ProjectionType" << YAML::Value << camera.GetProjectionType();
-			out << YAML::Key << "PerspectiveFOV" << YAML::Value << camera.GetPerspectiveFOV();
+			out << YAML::Key << "ProjectionType" << YAML::Value << (uint32_t)camera.GetProjectionType();
+			out << YAML::Key << "PerspectiveFOV" << YAML::Value << camera.GetPerspectiveVerticalFOV();
 			out << YAML::Key << "PerspectiveNear" << YAML::Value << camera.GetPerspectiveNearClip();
 			out << YAML::Key << "PerspectiveFar" << YAML::Value << camera.GetPerspectiveFarClip();
 			out << YAML::Key << "OrthographicSize" << YAML::Value << camera.GetOrthographicSize();
@@ -237,8 +237,8 @@ namespace Bento {
 					deserializedEntity.AddComponent<CameraComponent>();
 					auto& camComponent = deserializedEntity.GetComponent<CameraComponent>();
 
-					camComponent.Camera.SetProjectionType(camera["ProjectionType"].as<uint32_t>());
-					camComponent.Camera.SetPerspectiveFOV(camera["PerspectiveFOV"].as<float>());
+					camComponent.Camera.SetProjectionType((SceneCamera::ProjectionType)camera["ProjectionType"].as<uint32_t>());
+					camComponent.Camera.SetPerspectiveVerticalFOV(camera["PerspectiveFOV"].as<float>());
 					camComponent.Camera.SetPerspectiveNearClip(camera["PerspectiveNear"].as<float>());
 					camComponent.Camera.SetPerspectiveFarClip(camera["PerspectiveFar"].as<float>());
 					camComponent.Camera.SetOrthographicSize(camera["OrthographicSize"].as<float>());

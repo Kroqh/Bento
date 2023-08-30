@@ -17,11 +17,16 @@ namespace Bento {
 		virtual void OnDeAttach() override;
 		virtual void OnImGuiRender() override;
 
+		void BlockEvents(bool block) { m_BlockEvents = block; }
+
+		void SetDarkThemeColors();
+
 		void Begin();
 		void End();
 
 
 	private:
+		bool m_BlockEvents = true;
 		float m_Time = 0;
 	};
 

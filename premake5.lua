@@ -13,10 +13,13 @@ Includedir["ImGui"] = "Bento/vendor/imgui"
 Includedir["glm"] = "Bento/vendor/glm"
 Includedir["stb_image"] = "Bento/vendor/stb_image"
 Includedir["entt"] = "Bento/vendor/entt/include"
+Includedir["yaml_cpp"] = "Bento/vendor/yaml-cpp/include"
+Includedir["ImGuizmo"] = "Bento/vendor/ImGuizmo"
 
 include "Bento/vendor/GLFW"
 include "Bento/vendor/Glad"
 include "Bento/vendor/imgui"
+include "Bento/vendor/yaml-cpp"
 
 project "Bento"  
     location "Bento"
@@ -35,7 +38,9 @@ project "Bento"
         "%{prj.name}/vendor/glm/glm/**.hpp",
         "%{prj.name}/vendor/glm/glm/**.inl",
         "%{prj.name}/vendor/stb_image/**.h",
-        "%{prj.name}/vendor/stb_image/**.cpp"  
+        "%{prj.name}/vendor/stb_image/**.cpp",
+        "%{prj.name}/vendor/ImGuizo/ImGuizo/**.h",
+        "%{prj.name}/vendor/ImGuizo/ImGuizo/**.cpp"
     } 
 
     includedirs
@@ -47,7 +52,9 @@ project "Bento"
         "%{Includedir.ImGui}",
         "%{Includedir.glm}",
         "%{Includedir.stb_image}",
-        "%{Includedir.entt}"
+        "%{Includedir.entt}",
+        "%{Includedir.yaml_cpp}",
+        "%{Includedir.ImGuizmo}"
 
     }
 
@@ -56,6 +63,7 @@ project "Bento"
         "GLFW",
         "Glad",
         "ImGui",
+        "yaml-cpp",
         "opengl32.lib",
         "dwmapi.lib"
     }
@@ -69,7 +77,9 @@ project "Bento"
             "BENTO_PLATFORM_WINDOWS", 
             "BENTO_BUILD_DLL",
             "GLFW_INCLUDE_NONE",
-            "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS",
+            "YAML_CPP_STATIC_DEFINE"
+            
         }
  
 

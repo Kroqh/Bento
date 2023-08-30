@@ -34,13 +34,13 @@ namespace Bento {
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
 		BENTO_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:		BENTO_CORE_ASSERT(false, " RendererAPI::None is not surrported!"); return nullptr;
-		case RendererAPI::API::OpenGL:   return new OpenGLIndexBuffer(indices, count);
+		case RendererAPI::API::OpenGL:   return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 		BENTO_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
