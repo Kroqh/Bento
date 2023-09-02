@@ -176,6 +176,7 @@
     <ClInclude Include="src\Bento\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Bento\Renderer\Buffer.h" />
     <ClInclude Include="src\Bento\Renderer\Camera.h" />
+    <ClInclude Include="src\Bento\Renderer\EditorCamera.h" />
     <ClInclude Include="src\Bento\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Bento\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Bento\Renderer\OrthographicCamera.h" />
@@ -645,6 +646,7 @@
     <ClCompile Include="src\Bento\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="src\Bento\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Bento\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Bento\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Bento\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Bento\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Bento\Renderer\OrthographicCameraController.cpp" />

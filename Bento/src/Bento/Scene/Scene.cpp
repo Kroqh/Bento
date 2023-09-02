@@ -27,12 +27,16 @@ namespace Bento {
 		return entity;
 	}
 
+
+
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(Timestep ts)
+	
+
+	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		// Update scripts
 		{
@@ -50,6 +54,7 @@ namespace Bento {
 				});
 		}
 
+		
 		// Render 2D
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
@@ -77,14 +82,26 @@ namespace Bento {
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();
 		}
 
 	}
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
 
+		auto group = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+		}
+
+		Renderer2D::EndScene();
+	}
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		m_ViewportWidth = width;
@@ -108,7 +125,7 @@ namespace Bento {
 		for (auto entity : view) {
 			auto camera = view.get<CameraComponent>(entity);
 			if (camera.Primary) {
-				return { entity ,this };
+				return { entity , this };
 			}
 		}
 		return {};

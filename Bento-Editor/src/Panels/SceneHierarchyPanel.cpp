@@ -23,6 +23,8 @@ namespace Bento {
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered() && !ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+			ImGui::SetWindowFocus("Scene Hierarchy");
 
 		m_Context->m_Registry.each([&](auto entityID)
 			{
@@ -34,17 +36,19 @@ namespace Bento {
 			m_SelectionContext = {};
 
 		// Right-click on blank space
-		if (ImGui::BeginPopupContextWindow())
+		if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_MouseButtonRight))
 		{
+
 			if (ImGui::MenuItem("Create Empty Entity"))
 				m_Context->CreateEntity("Empty Entity");
-
 			ImGui::EndPopup();
 		}
 
 		ImGui::End();
 
 		ImGui::Begin("Properties");
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered())
+			ImGui::SetWindowFocus("Properties");
 		if (m_SelectionContext)
 		{
 			DrawComponents(m_SelectionContext);

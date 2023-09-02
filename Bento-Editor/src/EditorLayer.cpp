@@ -29,6 +29,7 @@ namespace Bento {
 		m_CameraController.SetZoomLevel(5.0f);
 
 		FramebufferSpecification fbSpec;
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		fbSpec.Width = Application::Get().GetWindow().GetWidth();
 		fbSpec.Height = Application::Get().GetWindow().GetHeight();
 		m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -36,6 +37,8 @@ namespace Bento {
 		m_ActiveScene = CreateRef<Scene>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorCamera = EditorCamera(30.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 	}
 
 	void EditorLayer::OnDeAttach()
@@ -56,13 +59,15 @@ namespace Bento {
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		// Update
-		if (m_ViewportFocused)
-			m_CameraController.OnUpdate(ts);
+		if (m_ViewportFocused) {
+			m_EditorCamera.OnUpdate(ts);
+
+		}
 
 		// Render
 		Renderer2D::ResetStats();
@@ -70,8 +75,20 @@ namespace Bento {
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
+		// Clear entity ID attachment to -1
+		m_Framebuffer->ClearColorAttachment(1, -1);
+
 		// Update scene
-		m_ActiveScene->OnUpdate(ts);
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+
+		if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
+
+			
+
+		}
+
+		
+
 
 		m_Framebuffer->UnBind();
 
@@ -158,7 +175,8 @@ namespace Bento {
 		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
-
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered())
+			ImGui::SetWindowFocus("Stats");
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -166,21 +184,33 @@ namespace Bento {
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
+
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
-
+		auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered())
+			ImGui::SetWindowFocus("Viewport");
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
-		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		ImVec2 viewportPanelSize = ImGui::GetWindowSize();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID(0);
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		auto windowSize = ImGui::GetWindowSize();
+		ImVec2 minBound= ImGui::GetWindowPos();
+		minBound.x += viewportOffset.x;
+		minBound.y += viewportOffset.y;
+		ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+		m_ViewportBounds[0] = { minBound.x, minBound.y };
+		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
+
+		
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -194,10 +224,8 @@ namespace Bento {
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 			
 			// Camera
-			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			const glm::mat4 cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			const glm::mat4 cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 			
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -235,9 +263,11 @@ namespace Bento {
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
+		m_EditorCamera.OnEvent(e);
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BENTO_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonReleasedEvent>(BENTO_BIND_EVENT_FN(EditorLayer::PickEntity));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -320,6 +350,37 @@ namespace Bento {
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Serialize(filepath);
 		}
+	}
+
+	bool EditorLayer::PickEntity(MouseButtonReleasedEvent& e)
+	{
+		if (ImGuizmo::IsOver())
+			return false;
+
+		m_Framebuffer->Bind();
+		auto [mx, my] = ImGui::GetMousePos();
+
+		mx -= m_ViewportBounds[0].x;
+		my -= m_ViewportBounds[0].y;
+		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+		my = viewportSize.y - my;
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
+			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+			if (pixelData >= 0) {
+				Entity entity = { (entt::entity)pixelData, m_ActiveScene.get() };
+				m_SceneHierarchyPanel.SetSelectedEntity(entity);
+			}
+			else
+			{
+				// Set selected entity to null
+				m_SceneHierarchyPanel.SetSelectedEntity({});
+			}
+		}
+		m_Framebuffer->UnBind();
+		return false;
 	}
 
 }

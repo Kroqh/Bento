@@ -19,6 +19,9 @@
     <Filter Include="src\Bento\ImGui">
       <UniqueIdentifier>{7EC92BEC-EA54-99B0-F365-1CA55F70F5B0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Bento\Math">
+      <UniqueIdentifier>{AD7E9ED8-994C-92DE-82E0-02056E4D6E43}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Bento\Platform">
       <UniqueIdentifier>{28202FD4-1404-F029-7D64-EA7C6967DAAB}</UniqueIdentifier>
     </Filter>
@@ -123,6 +126,9 @@
     <ClInclude Include="src\Bento\ImGui\ImGuiLayer.h">
       <Filter>src\Bento\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Math\Math.h">
+      <Filter>src\Bento\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClInclude>
@@ -154,6 +160,9 @@
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Camera.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\EditorCamera.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Renderer\Framebuffer.h">
@@ -1503,7 +1512,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bento\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bento\Core\Application.cpp">
@@ -1523,6 +1531,9 @@
     </ClCompile>
     <ClCompile Include="src\Bento\ImGui\ImGuiLayer.cpp">
       <Filter>src\Bento\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Math\Math.cpp">
+      <Filter>src\Bento\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Bento\Platform\OpenGL</Filter>
@@ -1555,6 +1566,9 @@
       <Filter>src\Bento\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Renderer\Buffer.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\EditorCamera.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Renderer\Framebuffer.cpp">
@@ -1632,6 +1646,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bento\Math\Math.cpp" />
   </ItemGroup>
 </Project>
