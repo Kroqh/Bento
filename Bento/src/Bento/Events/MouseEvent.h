@@ -4,7 +4,7 @@
 
 namespace Bento {
 
-	class BENTO_API MouseMovedEvent : public Event {
+	class MouseMovedEvent : public Event {
 	
 	public:
 		MouseMovedEvent(float x, float y)
@@ -32,7 +32,7 @@ namespace Bento {
 		
 	};
 
-	class BENTO_API MouseScrolledEvent : public Event {
+	class MouseScrolledEvent : public Event {
 
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -58,7 +58,7 @@ namespace Bento {
 
 	};
 
-	class BENTO_API MouseButtonEvent : public Event {
+	class MouseButtonEvent : public Event {
 
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -71,7 +71,7 @@ namespace Bento {
 		int m_Button;
 	};
 
-	class BENTO_API MouseButtonPressedEvent : public MouseButtonEvent {
+	class MouseButtonPressedEvent : public MouseButtonEvent {
 
 	public:
 		MouseButtonPressedEvent(int button)
@@ -88,7 +88,7 @@ namespace Bento {
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class BENTO_API MouseButtonReleasedEvent : public MouseButtonEvent {
+	class MouseButtonReleasedEvent : public MouseButtonEvent {
 
 	public:
 		MouseButtonReleasedEvent(int button)

@@ -78,12 +78,13 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BENTO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;..\Bento\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -96,15 +97,15 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BENTO_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;..\Bento\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -118,15 +119,15 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>BENTO_PLATFORM_WINDOWS;BENTO_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BENTO_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Bento\vendor\spdlog\include;..\Bento\src;..\Bento\vendor;..\Bento\vendor\glm;..\Bento\vendor\entt\include;..\Bento\vendor\ImGuizmo;..\Bento\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -138,11 +139,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BentoEditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
   </ItemGroup>
   <ItemGroup>

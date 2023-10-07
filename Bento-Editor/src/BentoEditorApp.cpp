@@ -3,20 +3,26 @@
 
 #include "EditorLayer.h"
 
-class BentoEditor : public Bento::Application
-{
-public:
-	BentoEditor()
-		: Application("Bento Editor")
+namespace Bento {
+
+	class BentoEditor : public Application
 	{
-		//PushLayer(new ExampleLayer());
-		PushLayer(new Bento::EditorLayer());
-	}
-	~BentoEditor() {
+	public:
+		BentoEditor(ApplicationSpecification& spec)
+			: Application(spec)
+		{
+			PushLayer(new EditorLayer());
+		}
+		~BentoEditor() {
 
-	}
-};
+		}
+	};
 
-Bento::Application* Bento::CreateApplication() {
-	return new BentoEditor();
+	Application* CreateApplication(ApplicationCommandLineArgs args) {
+		ApplicationSpecification spec;
+		spec.Name = "BentoEditor";
+		spec.CommandLineArgs = args;
+
+		return new BentoEditor(spec);
+	}
 }

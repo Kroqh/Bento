@@ -33,6 +33,7 @@ namespace Bento {
 
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
+		BENTO_CORE_ASSERT("Width and height must be over 0!",width > 0 && height > 0);
 		m_AspectRatio = (float)width / (float)height;
 		RecalculateProjection();
 	}

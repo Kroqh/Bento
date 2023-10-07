@@ -19,11 +19,7 @@ namespace Bento {
 
 	}
 
-	Window* Window::Create(const WindowProps& props) {
-		
-		return new WindowsWindow(props);
-		
-	}
+	
 
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
 

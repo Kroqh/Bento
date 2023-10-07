@@ -12,11 +12,13 @@
 #include "Bento/Math/Math.h"
 
 
+
 namespace Bento {
 
+	static const std::filesystem::path g_AssetPath = "assets";
 
 	EditorLayer::EditorLayer()
-		: Layer("Sandbox2D"), m_CameraController(1920.0f / 1080.0f, true)
+		: Layer("EditorLayer"), m_CameraController(1920.0f / 1080.0f, true)
 	{
 
 	}
@@ -25,6 +27,8 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
+		m_PlayIcon = Texture2D::Create("Panel-UI/play-button.png");
+		m_PauseIcon = Texture2D::Create("Panel-UI/pause.png");
 
 		m_CameraController.SetZoomLevel(5.0f);
 
@@ -35,6 +39,14 @@ namespace Bento {
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.DeSerialize(sceneFilePath);
+		}
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
@@ -49,7 +61,6 @@ namespace Bento {
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		BENTO_PROFILE_FUNCTION();
-
 
 
 		// Resize
@@ -79,13 +90,20 @@ namespace Bento {
 		m_Framebuffer->ClearColorAttachment(1, -1);
 
 		// Update scene
-		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+		switch (m_SceneState)
+		{
+		case Bento::EditorLayer::SceneState::Edit:
 
-		if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
+			if (m_DrawOverlay)
+				OnOverlayRender();
 
-			
-
+			m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+			break;
+		case Bento::EditorLayer::SceneState::Play:
+			m_ActiveScene->OnUpdateRuntime(ts);
+			break;
 		}
+		
 
 		
 
@@ -173,6 +191,7 @@ namespace Bento {
 		}
 
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
 		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered())
@@ -183,12 +202,13 @@ namespace Bento {
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+		ImGui::Checkbox("Render overlay", &m_DrawOverlay);
 
 
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport");
+		ImGui::Begin("Viewport",(bool*)0, ImGuiWindowFlags_NoScrollbar);
 		auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
 		if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered())
 			ImGui::SetWindowFocus("Viewport");
@@ -210,7 +230,16 @@ namespace Bento {
 		m_ViewportBounds[0] = { minBound.x, minBound.y };
 		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
-		
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) 
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				OpenScene(std::filesystem::path(g_AssetPath) / path);
+			}
+			
+
+			ImGui::EndDragDropTarget();
+		}
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -240,7 +269,7 @@ namespace Bento {
 			float snapValues[3] = { snapValue, snapValue, snapValue };
 
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::MODE::LOCAL, glm::value_ptr(transform),
 				nullptr, snap ? snapValues : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
@@ -252,12 +281,55 @@ namespace Bento {
 				tc.Rotation += deltaRotation;
 				tc.Scale = scale;
 			}
+
 		}
 
 		ImGui::End();
 		ImGui::PopStyleVar();
 
+		UI_ToolBar();
+
 		ImGui::End();
+	}
+
+	void EditorLayer::OnOverlayRender()
+	{
+		m_ActiveScene->OnRenderOverlay(m_EditorCamera);
+	}
+
+	void EditorLayer::UI_ToolBar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		auto& colors = ImGui::GetStyle().Colors;
+
+
+		auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+
+		auto& buttonAvtive = colors[ImGuiCol_ButtonActive];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonAvtive.x, buttonAvtive.y, buttonAvtive.z, 0.5f));
+
+		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		float size = ImGui::GetWindowContentRegionMax().y - 4.0f;
+
+		Ref<Texture2D> icon = m_SceneState == SceneState::Edit ?
+			m_PlayIcon : m_PauseIcon;
+
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+
+		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size }, { 0, 1 }, { 1, 0 }, 0)) {
+			
+			if(m_SceneState == SceneState::Edit)
+				OnScenePlay();
+			else if(m_SceneState == SceneState::Play)
+				OnSceneStop();
+		}
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(3);
+		ImGui::End();
+
 	}
 
 	void EditorLayer::OnEvent(Event& e)
@@ -298,6 +370,25 @@ namespace Bento {
 		{
 			if (control && shift)
 				SaveSceneAs();
+			else if (control && !shift)
+				SaveScene();
+			break;
+		}
+
+		case Key::Delete:
+		{
+			if (m_SceneHierarchyPanel.GetSelectedEntity()) {
+				m_ActiveScene->DestroyEntity(m_SceneHierarchyPanel.GetSelectedEntity());
+				m_SceneHierarchyPanel.SetSelectedEntity({});
+			}
+			break;
+		}
+
+		// Scene Commands
+		case Key::D:
+		{
+			if (control)
+				OnDuplicateEntity();
 
 			break;
 		}
@@ -333,13 +424,25 @@ namespace Bento {
 		std::string filepath = FileDialogs::OpenFile("Bento Scene (*.bento)\0*.bento\0");
 		if (!filepath.empty())
 		{
-			m_ActiveScene = CreateRef<Scene>();
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.DeSerialize(filepath);
+			OpenScene(filepath);
 		}
+	}
+
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		if (m_SceneState != SceneState::Edit)
+			OnSceneStop();
+		Ref<Scene> newScene = CreateRef<Scene>();
+		SceneSerializer serializer(newScene);
+		if (serializer.DeSerialize(path.string())) {
+
+			m_EditorScene = newScene;
+			m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_ActiveScene = m_EditorScene;
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_EditorScenePath = path;
+		}
+		
 	}
 
 	void EditorLayer::SaveSceneAs()
@@ -352,8 +455,19 @@ namespace Bento {
 		}
 	}
 
+	void EditorLayer::SaveScene()
+	{
+		if (!m_EditorScenePath.empty())
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(m_EditorScenePath.string());
+		}
+	}
+
 	bool EditorLayer::PickEntity(MouseButtonReleasedEvent& e)
 	{
+		if (e.GetMouseButton() != Mouse::Button0)
+			return false;
 		if (ImGuizmo::IsOver())
 			return false;
 
@@ -383,6 +497,28 @@ namespace Bento {
 		return false;
 	}
 
+	void EditorLayer::OnScenePlay()
+	{
+		m_SceneState = SceneState::Play;
+
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnRuntimeStart();
+	}
+
+	void EditorLayer::OnSceneStop()
+	{
+		m_SceneState = SceneState::Edit;
+		m_ActiveScene->OnRuntimeStop();
+		m_ActiveScene = m_EditorScene;
+	}
+	void EditorLayer::OnDuplicateEntity()
+	{
+		if (m_SceneState != SceneState::Edit)
+			return;
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity)
+			m_EditorScene->DuplicateEntity(selectedEntity);
+	}
 }
 
 

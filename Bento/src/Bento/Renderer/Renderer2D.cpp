@@ -3,9 +3,12 @@
 
 #include "VertexArray.h"
 #include "Shader.h"
+#include "UniformBuffer.h"
 #include "RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 namespace Bento {
 
@@ -17,6 +20,25 @@ namespace Bento {
 		glm::vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+		int entityID;
+	};
+
+
+	struct CircleVertex
+	{
+		glm::vec3 WorldPosition;
+		glm::vec3 LocalPosition;
+		glm::vec4 Color;
+		float Thickness;
+		float Fade;
+		int entityID;
+	};
+
+	struct LineVertex
+	{
+		glm::vec3 Position;
+		glm::vec4 Color;
+
 		int entityID;
 	};
 
@@ -32,9 +54,27 @@ namespace Bento {
 		Ref<Shader> TextureShader;
 		Ref<Texture2D> WhiteTexture;
 
+		Ref<VertexArray> CircleVertexArray;
+		Ref<VertexBuffer> CircleVertexBuffer;
+		Ref<Shader> CircleShader;
+
+		Ref<VertexArray> LineVertexArray;
+		Ref<VertexBuffer> LineVertexBuffer;
+		Ref<Shader> LineShader;
+
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
+
+		uint32_t CircleIndexCount = 0;
+		CircleVertex* CircleVertexBufferBase = nullptr;
+		CircleVertex* CircleVertexBufferPtr = nullptr;
+
+		uint32_t LineVertexCount = 0;
+		LineVertex* LineVertexBufferBase = nullptr;
+		LineVertex* LineVertexBufferPtr = nullptr;
+
+		float LineWidth = 5.0f;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
@@ -42,6 +82,12 @@ namespace Bento {
 		glm::vec4 QuadVertexPositions[4];
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData {
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 	static Renderer2DData s_Data;
@@ -85,6 +131,35 @@ namespace Bento {
 		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
 		delete[] quadIndices;
 
+		// Circles
+		s_Data.CircleVertexArray = VertexArray::Create();
+
+		s_Data.CircleVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(CircleVertex));
+		s_Data.CircleVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_WorldPosition" },
+			{ ShaderDataType::Float3, "a_LocalPosition" },
+			{ ShaderDataType::Float4, "a_Color"         },
+			{ ShaderDataType::Float,  "a_Thickness"     },
+			{ ShaderDataType::Float,  "a_Fade"          },
+			{ ShaderDataType::Int,    "a_EntityID"      }
+			});
+		s_Data.CircleVertexArray->AddVertexBuffer(s_Data.CircleVertexBuffer);
+		s_Data.CircleVertexArray->SetIndexBuffer(quadIB); // Use quad IB
+		s_Data.CircleVertexBufferBase = new CircleVertex[s_Data.MaxVertices];
+
+		// Lines
+		s_Data.LineVertexArray = VertexArray::Create();
+
+		s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(LineVertex));
+		s_Data.LineVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position"},
+			{ ShaderDataType::Float4, "a_Color"},
+			{ ShaderDataType::Int, "a_EntityID"}
+			});
+		s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
+		s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
+
+
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
@@ -93,9 +168,9 @@ namespace Bento {
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
 			samplers[i] = i;
 
-		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+		s_Data.TextureShader = Shader::Create("assets/shaders/Renderer2DQuad.glsl");
+		s_Data.CircleShader = Shader::Create("assets/shaders/Renderer2DCircle.glsl");
+		s_Data.LineShader = Shader::Create("assets/shaders/Renderer2DLine.glsl");
 
 		// Set first texture slot to 0
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -104,6 +179,8 @@ namespace Bento {
 		s_Data.QuadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -127,10 +204,8 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -139,10 +214,10 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetViewProjection();
+		
 
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -159,57 +234,55 @@ namespace Bento {
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
+		s_Data.CircleIndexCount = 0;
+		s_Data.CircleVertexBufferPtr = s_Data.CircleVertexBufferBase;
+
+		s_Data.LineVertexCount = 0;
+		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
+
 		s_Data.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::Flush()
 	{
-		if (s_Data.QuadIndexCount == 0)
-			return; // Nothing to draw
+		if (s_Data.QuadIndexCount) {
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
-		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
+			// Bind textures
+			for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+				s_Data.TextureSlots[i]->Bind(i);
 
-		// Bind textures
-		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
-			s_Data.TextureSlots[i]->Bind(i);
+			s_Data.TextureShader->Bind();
+			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+			s_Data.Stats.DrawCalls++;
+		}
 
-		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
-		s_Data.Stats.DrawCalls++;
+		if (s_Data.CircleIndexCount) {
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
+			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
+
+			s_Data.CircleShader->Bind();
+			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
+			s_Data.Stats.DrawCalls++;
+		}
+
+		if (s_Data.LineVertexCount) {
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
+			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
+
+			s_Data.LineShader->Bind();
+			RenderCommand::SetLineWidth(s_Data.LineWidth);
+			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
+			s_Data.Stats.DrawCalls++;
+		}
+		
 	}
 
 	void Renderer2D::NextBatch()
 	{
 		Flush();
 		StartBatch();
-	}
-
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
-	{
-		BENTO_PROFILE_FUNCTION();
-
-		constexpr size_t quadVertexCount = 4;
-		const float textureIndex = 0.0f; // White Texture
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-		const float tilingFactor = 1.0f;
-
-		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
-		for (size_t i = 0; i < quadVertexCount; i++)
-		{
-			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = src.Color;
-			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
-			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
-			s_Data.QuadVertexBufferPtr->entityID = entityID;
-			s_Data.QuadVertexBufferPtr++;
-		}
-
-		s_Data.QuadIndexCount += 6;
-
-		s_Data.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -242,7 +315,7 @@ namespace Bento {
 		DrawQuad(transform, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
 		BENTO_PROFILE_FUNCTION();
 
@@ -261,7 +334,7 @@ namespace Bento {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
-			s_Data.QuadVertexBufferPtr->entityID = -1;
+			s_Data.QuadVertexBufferPtr->entityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -270,7 +343,7 @@ namespace Bento {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		BENTO_PROFILE_FUNCTION();
 
@@ -307,6 +380,7 @@ namespace Bento {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->entityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -346,6 +420,110 @@ namespace Bento {
 
 		DrawQuad(transform, texture, tilingFactor, tintColor);
 	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
+	{
+
+		if (src.Texture)
+			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
+
+
+	}
+
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade, int entityID)
+	{
+		BENTO_PROFILE_FUNCTION();
+
+		constexpr size_t quadVertexCount = 4;
+
+		// TODO: implement for cirlces
+		//if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+		//	NextBatch();
+
+		for (size_t i = 0; i < quadVertexCount; i++)
+		{
+			s_Data.CircleVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[i];
+			s_Data.CircleVertexBufferPtr->LocalPosition = s_Data.QuadVertexPositions[i] * 2.0f;
+			s_Data.CircleVertexBufferPtr->Color = color;
+			s_Data.CircleVertexBufferPtr->Thickness = thickness;
+			s_Data.CircleVertexBufferPtr->Fade = fade;
+			s_Data.CircleVertexBufferPtr->entityID = entityID;
+			s_Data.CircleVertexBufferPtr++;
+		}
+
+		s_Data.CircleIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, int entityID)
+	{
+		s_Data.LineVertexBufferPtr->Position = p0;
+		s_Data.LineVertexBufferPtr->Color = color;
+		s_Data.LineVertexBufferPtr->entityID = entityID;
+		s_Data.LineVertexBufferPtr++;
+
+		s_Data.LineVertexBufferPtr->Position = p1;
+		s_Data.LineVertexBufferPtr->Color = color;
+		s_Data.LineVertexBufferPtr->entityID = entityID;
+		s_Data.LineVertexBufferPtr++;
+
+		s_Data.LineVertexCount += 2;
+	}
+
+	void Renderer2D::DrawWireCircle(const glm::vec3& position, float radius, const glm::vec4& color, int entityID)
+	{
+		float anglePerSide = 360 / 12;
+
+		for (size_t angle = 0; angle < 360; angle+=anglePerSide)
+		{
+			float angleInRadian1 = glm::radians((float)angle);
+			float angleInRadian2 = glm::radians((float)angle+ anglePerSide);
+			glm::vec3 p0 = glm::vec3(glm::cos(angleInRadian1) * (radius + 0.05f) + position.x, glm::sin(angleInRadian1) * (radius + 0.05f) + position.y, 0);
+			glm::vec3 p1 = glm::vec3(glm::cos(angleInRadian2) * (radius + 0.05f) + position.x, glm::sin(angleInRadian2) * (radius + 0.05f) + position.y, 0);
+
+			DrawLine(p0, p1, color);
+		}
+	}
+
+	void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID)
+	{
+		glm::vec3 p0 = glm::vec3(position.x - size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+		glm::vec3 p1 = glm::vec3(position.x - size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+		glm::vec3 p2 = glm::vec3(position.x + size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+		glm::vec3 p3 = glm::vec3(position.x + size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+
+		DrawLine(p0,p1, color);
+		DrawLine(p1,p2, color);
+		DrawLine(p2,p3, color);
+		DrawLine(p3,p0, color);
+	}
+
+	void Renderer2D::DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID)
+	{
+		glm::vec3 lineVertices[4];
+		for (size_t i = 0; i < 4; i++)
+		{
+			lineVertices[i] = transform * s_Data.QuadVertexPositions[i];
+		}
+		DrawLine(lineVertices[0], lineVertices[1], color);
+		DrawLine(lineVertices[1], lineVertices[2], color);
+		DrawLine(lineVertices[2], lineVertices[3], color);
+		DrawLine(lineVertices[3], lineVertices[0], color);
+	}
+
+	float Renderer2D::GetLineWidth()
+	{
+		return s_Data.LineWidth;
+	}
+
+	void Renderer2D::SetLineWidth(float width)
+	{
+		s_Data.LineWidth = width;
+	}
+
 
 	void Renderer2D::ResetStats()
 	{

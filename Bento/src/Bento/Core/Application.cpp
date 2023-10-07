@@ -1,53 +1,62 @@
 #include "Bentopch.h"
-#include "Application.h"
+#include "Bento/Core/Application.h"
+
+#include "Bento/Core/Log.h"
 
 #include "Bento/Renderer/Renderer.h"
+#include "Bento/Scripting/ScriptEngine.h"
 
 #include "Bento/Core/Input.h"
-#include "Bento/Core/KeyCodes.h"
-
-#include <GLFW/glfw3.h>
+#include "Bento/Utils/PlatformUtils.h"
 
 namespace Bento {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
-	
-
-	Application::Application(const std::string& name)
+	Application::Application(const ApplicationSpecification& specification)
+		: m_Specification(specification)
 	{
 		BENTO_PROFILE_FUNCTION();
 
 		BENTO_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = Scope<Window>(Window::Create(WindowProps(name)));
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		// Set working directory here
+		if (!m_Specification.WorkingDirectory.empty())
+			std::filesystem::current_path(m_Specification.WorkingDirectory);
+
+		m_Window = Window::Create(WindowProps(m_Specification.Name));
+		m_Window->SetEventCallback(BENTO_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
+
 	Application::~Application()
 	{
+		BENTO_PROFILE_FUNCTION();
+
+		ScriptEngine::Shutdown();
+		Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
 		BENTO_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
-	void Application::PushOverlay(Layer* overlay)
+	void Application::PushOverlay(Layer* layer)
 	{
 		BENTO_PROFILE_FUNCTION();
-		m_LayerStack.PushOverlay(overlay);
-		overlay->OnAttach();
+
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	void Application::Close()
@@ -55,58 +64,60 @@ namespace Bento {
 		m_Running = false;
 	}
 
-
 	void Application::OnEvent(Event& e)
 	{
 		BENTO_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnWindowCloseKey));
+		dispatcher.Dispatch<WindowCloseEvent>(BENTO_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BENTO_BIND_EVENT_FN(Application::OnWindowResize));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
-
-			(*--it)->OnEvent(e);
+		for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); ++it)
+		{
 			if (e.m_Handled)
 				break;
-
+			(*it)->OnEvent(e);
 		}
-
 	}
-
-	
-	
 
 	void Application::Run()
 	{
 		BENTO_PROFILE_FUNCTION();
 
-		while (m_Running) {
-			
-			float time = (float)glfwGetTime(); // Platform::GetTime();
+		while (m_Running)
+		{
+			BENTO_PROFILE_SCOPE("RunLoop");
+
+			float time = Time::GetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			if (!m_Minimized) {
 
-				for (Layer* layer : m_LayerStack)
+			if (!m_Minimized)
+			{
 				{
-					layer->OnUpdate(timestep);
+					BENTO_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
 				}
 
+				m_ImGuiLayer->Begin();
+				{
+					BENTO_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
 			}
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-			{
-				layer->OnImGuiRender();
-			}
-			m_ImGuiLayer->End();
+			Input::OnUpdate();
 
 			m_Window->OnUpdate();
 		}
 	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
@@ -117,30 +128,16 @@ namespace Bento {
 	{
 		BENTO_PROFILE_FUNCTION();
 
-		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
-
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
 			m_Minimized = true;
 			return false;
-
 		}
 
 		m_Minimized = false;
-
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
 	}
 
-	bool Application::OnWindowCloseKey(KeyPressedEvent& e)
-	{
-		if (Input::IsKeyPressed(Key::Escape)) {
-
-			m_Running = false;
-			return true;
-
-		}
-		return false;
-	}
-
-	
 }

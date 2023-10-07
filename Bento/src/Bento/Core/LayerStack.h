@@ -7,7 +7,7 @@
 
 namespace Bento {
 
-	class BENTO_API LayerStack
+	class  LayerStack
 	{
 	public:
 		LayerStack();

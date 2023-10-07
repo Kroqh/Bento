@@ -37,6 +37,9 @@
     <Filter Include="src\Bento\Scene">
       <UniqueIdentifier>{71C1DBEC-DD4C-49B1-E65D-CCA55268A5B1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Bento\Scripting">
+      <UniqueIdentifier>{56D3E46C-C234-C27A-4BA2-082DB702F939}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Bento\Utils">
       <UniqueIdentifier>{B45509ED-20E1-76B1-29F2-F9A595FCD2B1}</UniqueIdentifier>
     </Filter>
@@ -45,9 +48,6 @@
     </Filter>
     <Filter Include="vendor\ImGuizmo">
       <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="vendor\ImGuizmo\example">
-      <UniqueIdentifier>{4E948965-BACB-D1FC-C3D5-35202F8CF8F5}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -78,6 +78,9 @@
     <ClInclude Include="src\Bento\Core\Application.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Core\Assert.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Core\Core.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
@@ -102,7 +105,16 @@
     <ClInclude Include="src\Bento\Core\MouseCodes.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Core\PlatformDectection.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\Timer.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Core\Timestep.h">
+      <Filter>src\Bento\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Core\UUID.h">
       <Filter>src\Bento\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Core\Window.h">
@@ -145,6 +157,9 @@
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Bento\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLUniformBuffer.h">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.h">
@@ -198,6 +213,9 @@
     <ClInclude Include="src\Bento\Renderer\Texture.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Renderer\UniformBuffer.h">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Renderer\VertexArray.h">
       <Filter>src\Bento\Renderer</Filter>
     </ClInclude>
@@ -219,47 +237,20 @@
     <ClInclude Include="src\Bento\Scene\ScriptableEntity.h">
       <Filter>src\Bento\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Bento\Scripting\ScriptEngine.h">
+      <Filter>src\Bento\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bento\Scripting\ScriptGlue.h">
+      <Filter>src\Bento\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Bento\Utils\PlatformUtils.h">
       <Filter>src\Bento\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Bentopch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\ImCurveEdit.h">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\ImGradient.h">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
       <Filter>vendor\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\ImSequencer.h">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\ImApp.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imconfig.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imgui.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imgui_internal.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imstb_rectpack.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imstb_textedit.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\imstb_truetype.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGuizmo\example\stb_image.h">
-      <Filter>vendor\ImGuizmo\example</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1526,6 +1517,12 @@
     <ClCompile Include="src\Bento\Core\Log.cpp">
       <Filter>src\Bento\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Core\UUID.cpp">
+      <Filter>src\Bento\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Core\Window.cpp">
+      <Filter>src\Bento\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\ImGui\ImGuiBuild.cpp">
       <Filter>src\Bento\ImGui</Filter>
     </ClCompile>
@@ -1551,6 +1548,9 @@
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Bento\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLUniformBuffer.cpp">
       <Filter>src\Bento\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Bento\Platform\OpenGL\OpenGLVertexArray.cpp">
@@ -1601,6 +1601,9 @@
     <ClCompile Include="src\Bento\Renderer\Texture.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Renderer\UniformBuffer.cpp">
+      <Filter>src\Bento\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bento\Renderer\VertexArray.cpp">
       <Filter>src\Bento\Renderer</Filter>
     </ClCompile>
@@ -1616,32 +1619,17 @@
     <ClCompile Include="src\Bento\Scene\SceneSerializer.cpp">
       <Filter>src\Bento\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bento\Scripting\ScriptEngine.cpp">
+      <Filter>src\Bento\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bento\Scripting\ScriptGlue.cpp">
+      <Filter>src\Bento\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Bentopch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\ImCurveEdit.cpp">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\ImGradient.cpp">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClCompile>
     <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
       <Filter>vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\ImSequencer.cpp">
-      <Filter>vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\example\imgui.cpp">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\example\imgui_draw.cpp">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\example\imgui_widgets.cpp">
-      <Filter>vendor\ImGuizmo\example</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGuizmo\example\main.cpp">
-      <Filter>vendor\ImGuizmo\example</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>

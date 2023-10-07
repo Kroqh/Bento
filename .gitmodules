@@ -13,3 +13,9 @@
 [submodule "Bento/vendor/ImGuizmo"]
 	path = Bento/vendor/ImGuizmo
 	url = https://github.com/TheCherno/ImGuizmo
+[submodule "Bento/vendor/shaderc"]
+	path = Bento/vendor/shaderc
+	url = https://github.com/google/shaderc
+[submodule "Bento/vendor/Box2D"]
+	path = Bento/vendor/Box2D
+	url = https://github.com/MeisterRepsak/box2d

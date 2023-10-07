@@ -105,15 +105,15 @@ void Sandbox2D::OnUpdate(Bento::Timestep ts)
 	}
 	if (Bento::Input::IsMouseButtonPressed(Bento::Mouse::Button0))
 		{
-			auto [x, y] = Bento::Input::GetMousePosition();
+			glm::vec2 mousePos = Bento::Input::GetMousePosition();
 			auto width = Bento::Application::Get().GetWindow().GetWidth();
 			auto height = Bento::Application::Get().GetWindow().GetHeight();
 			
 			auto bounds = m_CameraController.GetBounds();
 			auto pos = m_CameraController.GetCamera().GetPosition();
-			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-			y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-			m_Particle.Position = { x + pos.x, y + pos.y };
+			mousePos.x = (mousePos.x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
+			mousePos.y = bounds.GetHeight() * 0.5f - (mousePos.y / height) * bounds.GetHeight();
+			m_Particle.Position = { mousePos.x + pos.x, mousePos.y + pos.y };
 			for (int i = 0; i < 5; i++)
 				m_ParticleSystem.Emit(m_Particle);
 		}

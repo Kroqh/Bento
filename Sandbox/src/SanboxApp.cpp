@@ -1,26 +1,29 @@
 #include <Bento.h>
-#include "Bento/Core/EntryPoint.h"
-
-#include "Bento/Platform/OpenGL/OpenGLShader.h"
-
-#include "imgui/imgui.h"
-
-#include <glm/gtc/type_ptr.hpp>
+#include <Bento/Core/EntryPoint.h>
 
 #include "Sandbox2D.h"
 
 class Sandbox : public Bento::Application
 {
 public:
-	Sandbox() {
-		//PushLayer(new ExampleLayer());
+	Sandbox(const Bento::ApplicationSpecification& specification)
+		: Bento::Application(specification)
+	{
+		// PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
 	}
-	~Sandbox() {
 
+	~Sandbox()
+	{
 	}
 };
 
-Bento::Application* Bento::CreateApplication() {
-	return new Sandbox();
+Bento::Application* Bento::CreateApplication(Bento::ApplicationCommandLineArgs args)
+{
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../Bentonut";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }

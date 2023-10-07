@@ -13,6 +13,10 @@ namespace Bento {
 
 	};
 
-
+	class Time
+	{
+	public:
+		static float GetTime();
+	};
 
 }

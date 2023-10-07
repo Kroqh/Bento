@@ -1,6 +1,9 @@
 #pragma once
-#include "Bentopch.h"
+
+#include "Bento/Debug/Instrumentor.h"
 #include "Bento/Core/Core.h"
+
+#include <functional>
 
 
 namespace Bento {
@@ -36,7 +39,7 @@ namespace Bento {
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 	
-	class BENTO_API Event {
+	class Event {
 
 		friend class EventDispatcher;
 	public:

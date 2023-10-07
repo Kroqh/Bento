@@ -5,7 +5,7 @@
 
 namespace Bento {
 
-	class BENTO_API WindowResizeEvent : public Event {
+	class WindowResizeEvent : public Event {
 
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -30,7 +30,7 @@ namespace Bento {
 
 	};
 
-	class BENTO_API WindowCloseEvent : public Event {
+	class WindowCloseEvent : public Event {
 
 	public:
 		WindowCloseEvent() {}
@@ -40,7 +40,7 @@ namespace Bento {
 
 	};
 
-	class BENTO_API AppTickEvent : public Event {
+	class  AppTickEvent : public Event {
 
 		AppTickEvent() {}
 
@@ -49,7 +49,7 @@ namespace Bento {
 
 	};
 
-	class BENTO_API AppUpdateEvent : public Event {
+	class  AppUpdateEvent : public Event {
 
 		AppUpdateEvent() {}
 
@@ -58,7 +58,7 @@ namespace Bento {
 
 	};
 
-	class BENTO_API AppRenderEvent : public Event {
+	class  AppRenderEvent : public Event {
 
 		AppRenderEvent() {}
 

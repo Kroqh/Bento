@@ -1,7 +1,19 @@
 # Directories
-.vs/
 bin/
 bin-int/
+Intermediates/
+Bento/vendor/VulkanSDK
+
+# Bento files
+*.log
+
+# Visual studio files
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
 
 # Files
 *.user

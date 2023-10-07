@@ -15,6 +15,8 @@
 #include <unordered_set>
 #include <stdint.h>
 
+#include "Bento/Core/Core.h"
+
 #include "Bento/Core/Log.h"
 
 #include "Bento/Debug/Instrumentor.h"

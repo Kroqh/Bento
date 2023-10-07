@@ -19,6 +19,7 @@ namespace Bento {
 	Ref<Texture2D> Texture2D::Create(const std::string& path)
 	{
 		BENTO_PROFILE_FUNCTION();
+		
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:     BENTO_CORE_ASSERT(false, " RendererAPI::None is not surrported!"); return nullptr;

@@ -8,7 +8,14 @@
 
 #include "Bento/Scene/Components.h"
 
+#include "Bento/Renderer/Texture.h"
+
+#include "Bento/Scripting/ScriptEngine.h"
+
 namespace Bento {
+
+	static const std::filesystem::path g_AssetPath = "assets";
+	
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
 	{
 		SetContext(context);
@@ -204,6 +211,7 @@ namespace Bento {
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
+
 		if (entity.HasComponent<TagComponent>())
 		{
 			auto& tag = entity.GetComponent<TagComponent>().Tag;
@@ -227,13 +235,64 @@ namespace Bento {
 		{
 			if (ImGui::MenuItem("Camera"))
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
+				if (!m_SelectionContext.HasComponent<CameraComponent>())
+					m_SelectionContext.AddComponent<CameraComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the Camera Component");
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Sprite Renderer"))
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the SpriteRenderer Component");
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Circle Renderer"))
+			{
+				if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
+					m_SelectionContext.AddComponent<CircleRendererComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the CircleRenderer Component");
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Rigidbody 2D"))
+			{
+				if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
+					m_SelectionContext.AddComponent<Rigidbody2DComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the Rigidbody2D Component");
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Box Collider 2D"))
+			{
+				if (!m_SelectionContext.HasComponent<BoxCollider2DComponent>())
+					m_SelectionContext.AddComponent<BoxCollider2DComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the BoxCollider2D Component");
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Circle Collider 2D"))
+			{
+				if (!m_SelectionContext.HasComponent<CircleCollider2DComponent>())
+					m_SelectionContext.AddComponent<CircleCollider2DComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the CircleCollider2DComponent Component");
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Script Component"))
+			{
+				if (!m_SelectionContext.HasComponent<ScriptComponent>())
+					m_SelectionContext.AddComponent<ScriptComponent>();
+				else
+					BENTO_CORE_WARN("This entity already has the ScriptComponent Component");
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -310,9 +369,101 @@ namespace Bento {
 				}
 			});
 
+		DrawComponent<ScriptComponent>("Script", entity, [](ScriptComponent& component)
+			{
+				bool scriptClassExists = false;
+
+				const auto& entityClasses = ScriptEngine::GetEntityClasses();
+				if (entityClasses.find(component.Name) != entityClasses.end())
+					scriptClassExists = true;
+
+				char buffer[64];
+				strcpy(buffer, component.Name.c_str());
+
+				if (!scriptClassExists)
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+
+				if (ImGui::InputText("Class", buffer, sizeof(buffer))) {
+					component.Name = buffer;
+				}
+				if (!scriptClassExists)
+					ImGui::PopStyleColor(1);
+			});
+
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](SpriteRendererComponent& component)
 			{
 				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::Button("Texture", { 100, 0 });
+
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+						Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+						component.Texture = texture;
+					}
+					ImGui::EndDragDropTarget();
+				}
+				if(component.Texture)
+					ImGui::Text("%d", component.Texture->GetRendererID());
+				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+			});
+
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](CircleRendererComponent& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::DragFloat("Thickness", &component.Thickness, 0.05f, 0.0f, 1.0f);
+				ImGui::DragFloat("Fade", &component.Fade, 0.005f, 0.005f, 1.0f);
+			});
+
+		DrawComponent<Rigidbody2DComponent>("RigidBody 2D", entity, [](Rigidbody2DComponent& component)
+			{
+				const char* bodyTypeString[] = { "Static", "Kinematic", "Dynamic" };
+				const char* currentBodyTypeString = bodyTypeString[(int)component.Type];
+				if (ImGui::BeginCombo("BodyType", currentBodyTypeString)) {
+
+					for (uint32_t i = 0; i < 3; i++)
+					{
+						bool isSelected = currentBodyTypeString == bodyTypeString[i];
+						if (ImGui::Selectable(bodyTypeString[i], isSelected)) {
+
+							currentBodyTypeString = bodyTypeString[i];
+							component.Type = (Rigidbody2DComponent::BodyType)i;
+
+						}
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+				ImGui::Checkbox("FixedRotation", &component.FixedRotation);
+				float gravityScale = component.gravityScale;
+				if(ImGui::DragFloat("GravityScale", &gravityScale, 0.05f)) {
+					component.gravityScale = gravityScale;
+				}
+
+				
+			});
+
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](BoxCollider2DComponent& component)
+			{
+				ImGui::DragFloat2("Size", glm::value_ptr(component.Size), 0.1f);
+				ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset), 0.1f);
+				ImGui::DragFloat("Density", &component.Density, 0.1f);
+				ImGui::DragFloat("Friction", &component.Friction, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat("Restitution", &component.Restitution, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat("RestitutionThreshold", &component.RestitutionThreshold, 0.1f);
+			});
+
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](CircleCollider2DComponent& component)
+			{
+				ImGui::DragFloat("Radius", &component.Radius, 0.1f);
+				ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset), 0.1f);
+				ImGui::DragFloat("Density", &component.Density, 0.1f);
+				ImGui::DragFloat("Friction", &component.Friction, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat("Restitution", &component.Restitution, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat("RestitutionThreshold", &component.RestitutionThreshold, 0.1f);
 			});
 
 	}

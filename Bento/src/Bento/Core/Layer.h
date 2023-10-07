@@ -6,7 +6,7 @@
 
 namespace Bento {
 
-	class BENTO_API Layer
+	class Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");
@@ -16,6 +16,7 @@ namespace Bento {
 		virtual void OnDeAttach() {}
 		virtual void OnUpdate(Timestep ts) {}
 		virtual void OnImGuiRender() {};
+		virtual void OnOverlayRender() {};
 		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetName() const { return m_DebugName; }

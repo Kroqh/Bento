@@ -1,8 +1,9 @@
 #pragma once
+#include "Bento/Core/Core.h"
 
 #include <string>
+#include <filesystem>
 
-#include "Bento/Core/Core.h"
 
 namespace Bento {
 
@@ -12,6 +13,7 @@ namespace Bento {
 		virtual ~Texture() = default;
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
+		virtual std::string GetTexturePath() const = 0;
 
 		virtual uint32_t GetRendererID() const = 0;
 

@@ -40,6 +40,16 @@ namespace Bento {
 			s_RendererAPI->DrawIndexed(vertexArray);
 
 		}
+		inline static void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) {
+
+			s_RendererAPI->DrawLines(vertexArray, vertexCount);
+
+		}
+		inline static void SetLineWidth(float width) {
+
+			s_RendererAPI->SetLinesWidth(width);
+
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 
